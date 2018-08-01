@@ -1,0 +1,13 @@
+{
+  "name": "vx-util",
+  "version": "0.1.0",
+  "description": "Core utility library for Vevox projects",
+  "main": "index.js",
+  "repository": "https://github.com/VevoxDigital/vx-util",
+  "author": "Vevox Digital",
+  "contributors": [
+    "Matthew Struble <matt@vevox.io>"
+  ],
+  "license": "MIT",
+  "private": false
+}

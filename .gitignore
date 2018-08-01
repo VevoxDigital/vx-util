@@ -1,0 +1,7 @@
+
+# Vendor Files
+node_modules/
+
+# Distribution
+dist/
+lib/
