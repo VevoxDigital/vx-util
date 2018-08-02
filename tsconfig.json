@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist/tsc",
+    "allowJs": false,
+    "target": "es6",
+    "strict": true,
+    "declaration": true,
+    "declarationDir": "./dist/tsc",
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "listEmittedFiles": false,
+    "removeComments": false,
+    "downlevelIteration": true,
+    "jsx": "react",
+    "lib": [ "ES2015" ],
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "dist",
+    "res",
+    "doc",
+    "coverage",
+    "node_modules/**",
+    "license.ts",
+    "update.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "**/*.js"
+  ]
+}
