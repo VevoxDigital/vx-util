@@ -1,4 +1,6 @@
 
+/// <reference types=".." />
+
 import vxEventEmitterImpl from './event'
 import vxLogger from './logger'
 import vxProcessMain from './process'

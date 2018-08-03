@@ -1,5 +1,5 @@
 
-/// <reference path="./index.d.ts" />
+/// <reference types=".." />
 
 import MaxEventListenersReachedError from './error/max-event-listeners'
 

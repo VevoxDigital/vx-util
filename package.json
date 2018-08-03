@@ -1,8 +1,9 @@
 {
   "name": "vx-util",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Core utility library for Vevox projects",
-  "main": "lib/index.js",
+  "main": "lib/main.js",
+  "types": "lib/main.d.ts",
   "repository": "https://github.com/VevoxDigital/vx-util",
   "author": "Vevox Digital",
   "contributors": [
