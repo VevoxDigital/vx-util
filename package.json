@@ -2,12 +2,24 @@
   "name": "vx-util",
   "version": "0.1.0",
   "description": "Core utility library for Vevox projects",
-  "main": "index.js",
+  "main": "lib/main.js",
   "repository": "https://github.com/VevoxDigital/vx-util",
   "author": "Vevox Digital",
   "contributors": [
     "Matthew Struble <matt@vevox.io>"
   ],
+  "scripts": {
+    "make": "./node_modules/.bin/rimraf lib/ && tsc"
+  },
   "license": "MIT",
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "@types/debug": "^0.0.30",
+    "@types/node": "^10.5.5",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "winston": "^3.0.0"
+  }
 }

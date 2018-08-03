@@ -80,41 +80,6 @@ declare interface IEventEmitter<E extends IDictionary, K = keyof E> {
   events (): ReadonlyArray<K | symbol>
 }
 
-/** The level to log a message at */
-declare type ConsoleLoggingLevel = 'error' | 'warning' | 'info'
-
-/** A logging method that accepts a logging level */
-declare type LoggingMethod<L> = (level: L, message: string, ...data: any[]) => void
-
-/** A logging method that has a pre-assigned logging level */
-declare type LoggingLevelMethod = (message: string, ...data: any[]) => void
-
-/**
- * A generic logging interface
- */
-declare interface ILogger<L = ConsoleLoggingLevel> {
-  /** The top-most global logger for this chain. */
-  global: ILogger<L>
-
-  /** The parent to this logger */
-  parent: ILogger<L>
-
-  /**
-   * Logs a message at the given level
-   * @param level The level to log at
-   * @param message The message
-   * @param data Any data to format into the message
-   */
-  log: LoggingMethod<L>
-
-  /**
-   * Creates a sublogger parented to this logger
-   * @param prefix The logger's prefix
-   * @returns The new logger
-   */
-  createSubLogger (...prefix: string[]): ILogger<L>
-}
-
 /** The `package.json` file for yarn/npm */
 declare namespace PackageJSON {
   export interface IPackage {
