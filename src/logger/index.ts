@@ -39,6 +39,15 @@ export function createWistonLogger (): winston.Logger {
 }
 
 export default class Logger {
+  /**
+   * Initializes a new logger for the given package
+   * @param packageName The name of the package
+   * @returns The logger made
+   */
+  public static init (packageName: string): Logger {
+    return new Logger(packageName, '')
+  }
+
   /** The global logger this logger inhierited from */
   public readonly global: Logger
 

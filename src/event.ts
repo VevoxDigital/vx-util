@@ -1,6 +1,4 @@
 
-/// <reference types=".." />
-
 import MaxEventListenersReachedError from './error/max-event-listeners'
 
 interface IEventListener {

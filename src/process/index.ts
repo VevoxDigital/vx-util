@@ -1,5 +1,5 @@
 
-import EventEmitterImpl from '../event'
+import EventEmitter from '../event'
 import ProcessMessage from './message'
 
 export enum Events {
@@ -20,7 +20,7 @@ export interface IProcessMainEvents extends IEventEmitter<typeof Events> {
  * The main process for a module
  * @author Matthew Struble <matt@vevox.io>
  */
-export default class ProcessMain<A = any> extends EventEmitterImpl<typeof Events> implements IProcessMainEvents {
+export default class ProcessMain<A = any> extends EventEmitter<typeof Events> implements IProcessMainEvents {
   public static readonly Events = Events
 
   /** The `package.json` for this module */
