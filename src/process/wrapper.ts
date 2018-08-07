@@ -2,6 +2,7 @@
 import * as assert from 'assert'
 
 import EventEmitterImpl from '../event'
+import Logger from '../logger'
 import ProcessMain from './'
 
 export enum Events {
@@ -15,6 +16,33 @@ export enum Events {
 
 export default class ProcessWrapper<A = any> extends EventEmitterImpl<typeof Events> {
   public static readonly Events = Events
+
+  public static async startSimple<T = any> (
+    script: string,
+    pkg: PackageJSON.IPackage,
+    args: T,
+    logger: Logger,
+    cwd: string = process.cwd()
+  ): Promise<ProcessMain<T>> {
+    const wrapper = new ProcessWrapper<T>(script, pkg, args, cwd)
+    logger.debug('cwd:  %s', wrapper.cwd)
+    logger.debug('args: %O', wrapper.args)
+
+    return new Promise<ProcessMain<T>>((resolve, reject) => {
+      wrapper.once(ProcessWrapper.Events.IMPORTED, () => logger.silly('main process imported'))
+      wrapper.once(ProcessWrapper.Events.CONSTRUCTED, (main: ProcessMain<T>) => {
+        logger.silly('wrapper/main working dir match: %s', wrapper.cwd === main.cwd)
+
+        wrapper.once(ProcessWrapper.Events.READY, () => resolve(main))
+        wrapper.once(ProcessWrapper.Events.ERROR, reject)
+        wrapper.once(ProcessWrapper.Events.EXIT, process.exit)
+
+        logger.silly('main process constructed, start wrapper')
+        wrapper.start()
+      })
+      wrapper.init()
+    })
+  }
 
   /** The script URL (relative to the working directory) to invoke */
   public readonly script: string
