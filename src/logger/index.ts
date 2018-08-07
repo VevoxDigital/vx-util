@@ -60,31 +60,40 @@ export default class Logger {
   /** The logger's prefix */
   public readonly prefix: string
 
+  protected readonly logger: winston.Logger
+
   private readonly debugger: debug.IDebugger
-  private readonly logger: winston.Logger
   private readonly subLoggers: Map<string, Logger>
   private consoleLevel: LoggingLevel = LoggingLevel.ERROR
 
-  private constructor (packageName: string, prefix: string, parent?: Logger, global?: Logger) {
+  private constructor (packageName: string, prefix: string, parentLogger?: Logger, globalLogger?: Logger) {
     this.prefix = prefix
     this.packageName = packageName
 
-    this.parent = parent || this
-    this.global = global || this
+    this.parent = parentLogger || this
+    this.global = globalLogger || this
 
-    this.debugger = debug([ packageName, prefix ].join(':'))
-    this.logger = createWistonLogger()
+    this.debugger = debug(prefix.length ? [ packageName, prefix ].join(':') : prefix)
+    this.logger = globalLogger ? globalLogger.logger : createWistonLogger()
 
     this.subLoggers = new Map<string, Logger>()
   }
 
   /**
-   * Sets or gets the logging level of the console
+   * Sets (if this logger is global) or gets the logging level of the console
    * @param level If specified, sets the logging level
    * @returns The current logging level
    */
   public consoleLoggingLevel (level?: LoggingLevel): LoggingLevel {
-    if (level) this.consoleLevel = level
+    if (level && this.global === this) {
+      this.consoleLevel = level
+      const console = this.logger.transports.find(transport => transport instanceof winston.transports.Console)
+      if (console) {
+        console.level = this.consoleLevel
+        this.debug('update console level "%s", found transport', level)
+      } else this.debug('update console level "%s", no transport found in %O', level, this.logger.transports)
+    }
+    this.debug('console level: ' + level)
     return this.consoleLevel
   }
 
@@ -95,10 +104,9 @@ export default class Logger {
    * @param data Optionally, data to format the message with
    */
   public log (level: LoggingLevel, message: string, ...data: any[]): void {
-    const m = format(message, ...data)
-
-    if (level === LoggingLevel.DEBUG) this.debugger(m)
-    this.logger.log(level, m)
+    if (level === LoggingLevel.DEBUG) this.debugger(message, ...data)
+    else if (this.global === this) this.logger.log(level, data.length ? format(message, ...data) : message)
+    else this.global.log(level, format('[%s] ' + message, this.prefix, ...data))
   }
 
   /**
