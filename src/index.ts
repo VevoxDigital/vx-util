@@ -1,4 +1,6 @@
 
+/// <reference path="../index.d.ts" />
+
 export { default as EventEmitter } from './event'
 
 export { default as Logger, LoggingLevel, createWistonLogger } from './logger'
