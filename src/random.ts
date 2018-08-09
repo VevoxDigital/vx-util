@@ -4,7 +4,7 @@
  * of this generator that were created with the same seed should generate the
  * same sequence of numbers.
  */
-export default class Random {
+export class Random {
   /** The high value for the random */
   public static readonly HI = 0x7FFFFFFF
 
