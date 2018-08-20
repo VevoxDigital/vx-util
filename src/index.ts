@@ -11,5 +11,7 @@ export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'
 export { default as ProcessWrapper } from './process/wrapper'
 
+export { TupleKey } from './util/key'
+
 export { Random } from './random'
 export const io = module_io
