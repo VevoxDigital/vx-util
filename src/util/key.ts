@@ -11,7 +11,7 @@ export class TupleKey {
    * @param raw The string to generate from
    * @returns The new key
    */
-  public static fromString (raw: string): TupleKey {
+  public static from (raw: string): TupleKey {
     const i = raw.indexOf(TupleKey.SEP)
     if (i < 0) return new TupleKey(raw, 'r')
     else return new TupleKey(raw.substring(0, i), raw.substring(i + 1))
@@ -29,10 +29,10 @@ export class TupleKey {
   }
 
   public toString (): string {
-    return this.l + TupleKey.SEP + this.r
+    return this.l + ':' + this.r
   }
 
   public valueOf (): string {
-    return this.toString()
+    return this.l + TupleKey.SEP + this.r
   }
 }
