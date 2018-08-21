@@ -38,7 +38,11 @@ export function createWistonLogger (): winston.Logger {
   })
 }
 
-export default class Logger {
+/**
+ * A class that controls the runtime output of a process
+ * @author Matthew Struble <matt@vevox.io>
+ */
+export class Logger {
   /**
    * Initializes a new logger for the given package
    * @param packageName The name of the package

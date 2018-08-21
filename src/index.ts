@@ -5,7 +5,7 @@ import * as module_io from './io'
 
 export { default as EventEmitter } from './event'
 
-export { default as Logger, LoggingLevel, createWistonLogger } from './logger'
+export { Logger, LoggingLevel, createWistonLogger } from './logger'
 
 export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'

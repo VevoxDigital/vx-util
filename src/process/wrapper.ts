@@ -2,7 +2,7 @@
 import * as assert from 'assert'
 
 import EventEmitterImpl from '../event'
-import Logger from '../logger'
+import { Logger } from '../logger'
 import ProcessMain from './'
 
 export enum Events {
