@@ -1,6 +1,6 @@
 {
   "name": "vx-util",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Core utility library for Vevox projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,8 +12,10 @@
   "scripts": {
     "make": "./node_modules/.bin/rimraf lib/ && tsc"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
-  "private": false,
   "devDependencies": {
     "@types/debug": "^0.0.30",
     "@types/node": "^10.5.5",
