@@ -1,6 +1,6 @@
-import OrderedPair from 'math/ordered/pair'
+import { OrderedPair } from 'math/ordered/pair'
 import { ICloneable } from './cloneable'
-import ISerializeable from './serializeable'
+import { ISerializeable } from './serializeable'
 
 /**
  * A tuple key is one that combines to keys together

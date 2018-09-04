@@ -1,9 +1,9 @@
 import * as debug from 'debug'
 
 import { ICloneable } from 'util/cloneable'
-import ISerializeable from 'util/serializeable'
-import OrderedPair from '../ordered/pair'
-import VectorP2f from './p2f'
+import { ISerializeable } from 'util/serializeable'
+import { OrderedPair } from '../ordered/pair'
+import { VectorP2f } from './p2f'
 
 const d = debug('vx-util:vector:cartesian2f')
 

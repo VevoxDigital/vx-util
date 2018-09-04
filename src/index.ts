@@ -2,6 +2,7 @@
 /// <reference path="../index.d.ts" />
 
 import * as module_io from './io'
+import * as module_util from './util'
 
 export { default as EventEmitter } from './event'
 
@@ -11,10 +12,19 @@ export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'
 export { default as ProcessWrapper } from './process/wrapper'
 
+export { OrderedPair } from './math/ordered/pair'
+export { OrderedTriple } from './math/ordered/triple'
+export { VectorC2f } from './math/vector/c2f'
+export { VectorP2f } from './math/vector/p2f'
+
+export { ICloneable } from './util/cloneable'
 export { TupleKey } from './util/key'
+export { ISerializeable } from './util/serializeable'
 
 export { Random } from './random'
+
 export const io = module_io
+export const util = module_util
 
 Math.PI_2 = Math.PI * 2
 Math.PI_HALF = Math.PI / 2

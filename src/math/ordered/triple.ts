@@ -1,14 +1,14 @@
 import * as debug from 'debug'
 
 import { ICloneable } from 'util/cloneable'
-import ISerializeable from 'util/serializeable'
+import { ISerializeable } from 'util/serializeable'
 
 const d = debug('vx-util:ordered:triple')
 
 /**
  * An ordered set of three objects
  */
-export default class OrderedTriple<A, B = A, C = B>
+export class OrderedTriple<A, B = A, C = B>
 implements ICloneable<OrderedTriple<A, B, C>>, ISerializeable<A | B | C> {
 
   /** The first object in the set */

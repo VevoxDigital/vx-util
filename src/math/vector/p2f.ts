@@ -1,8 +1,8 @@
 import * as debug from 'debug'
 
 import { ICloneable } from 'util/cloneable'
-import ISerializeable from 'util/serializeable'
-import OrderedPair from '../ordered/pair'
+import { ISerializeable } from 'util/serializeable'
+import { OrderedPair } from '../ordered/pair'
 import { VectorC2f } from './c2f'
 
 const d = debug('vx-util:vector:polar2f')
@@ -10,7 +10,7 @@ const d = debug('vx-util:vector:polar2f')
 /**
  * A 2D polar vector
  */
-export default class VectorP2f
+export class VectorP2f
 extends OrderedPair<number>
 implements ICloneable<VectorP2f>, ISerializeable<number> {
   /**

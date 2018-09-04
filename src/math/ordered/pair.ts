@@ -1,14 +1,14 @@
 import * as debug from 'debug'
 
 import { ICloneable } from 'util/cloneable'
-import ISerializeable from 'util/serializeable'
+import { ISerializeable } from 'util/serializeable'
 
 const d = debug('vx-util:ordered:pair')
 
 /**
  * An ordered pair of objects
  */
-export default class OrderedPair<A, B = A>
+export class OrderedPair<A, B = A>
 implements ICloneable<OrderedPair<A, B>>, ISerializeable<A | B> {
 
   /** The first object in the set */
