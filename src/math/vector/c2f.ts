@@ -1,17 +1,18 @@
 import { ICloneable } from 'util/cloneable'
 import ISerializeable from 'util/serializeable'
 import OrderedPair from '../ordered/pair'
+import VectorP2f from './p2f'
 
 /**
  * A floating-point vector 2 value
  */
-export class Vector2f
+export class VectorC2f
 extends OrderedPair<number>
-implements ICloneable<Vector2f>, ISerializeable<number> {
+implements ICloneable<VectorC2f>, ISerializeable<number> {
 
   /** Creates a zero vector */
-  public static zero (): Vector2f {
-    return new Vector2f(0, 0)
+  public static zero (): VectorC2f {
+    return new VectorC2f(0, 0)
   }
 
   /** The magnitude of this vector, to as much precision as JS allows */
@@ -42,40 +43,61 @@ implements ICloneable<Vector2f>, ISerializeable<number> {
    * Returns a new vector that is the sum of this vector and the given one
    * @param vector The vector to add
    */
-  public add (vector: Vector2f): Vector2f {
-    return new Vector2f(this.x + vector.x, this.y + vector.y)
+  public add (vector: VectorC2f): VectorC2f {
+    return new VectorC2f(this.x + vector.x, this.y + vector.y)
   }
 
   /**
    * Returns a new vector that is this vector scaled by the given scalar
    * @param scalar The scalar to scale by
    */
-  public scale (scalar: number): Vector2f {
-    return new Vector2f(this.x * scalar, this.y * scalar)
+  public scale (scalar: number): VectorC2f {
+    return new VectorC2f(this.x * scalar, this.y * scalar)
   }
 
   /**
    * Returns a new vector that is the inverse of this one
    */
-  public inverse (): Vector2f {
-    return new Vector2f(-this.x, -this.y)
+  public inverse (): VectorC2f {
+    return new VectorC2f(-this.x, -this.y)
   }
 
   /**
    * Returns a new vector that is perpendicular to this one
    */
-  public perpendicular (): Vector2f {
-    return new Vector2f(this.y, -this.x)
+  public perpendicular (): VectorC2f {
+    return new VectorC2f(this.y, -this.x)
   }
 
   /**
    * Creates a new vector that shares the same direction but has a magnitude of one.
    */
-  public unit (): Vector2f {
+  public unit (): VectorC2f {
     return this.clone().scale(1 / this.magnitude)
   }
 
-  public clone (): Vector2f {
-    return new Vector2f(this.x, this.y)
+  /**
+   * Creates a new vector in polar form with the same direction and magnitude
+   * as this one
+   */
+  public toPolar (): VectorP2f {
+    const r = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    let t = Math.atan(this.y / this.x)
+
+    if (this.x > 0 && this.y < 0) t += Math.PI_2
+    else if (this.x < 0) t += Math.PI
+
+    return new VectorP2f(t, r)
+  }
+
+  public clone (): VectorC2f {
+    return new VectorC2f(this.x, this.y)
+  }
+
+  public serialize (): IDictionary<number> {
+    return {
+      x: this.x,
+      y: this.y
+    }
   }
 }
