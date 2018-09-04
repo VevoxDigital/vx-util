@@ -16,7 +16,7 @@
     "listEmittedFiles": false,
     "removeComments": false,
     "downlevelIteration": true,
-    "lib": [ "ES2015" ],
+    "lib": [ "es6" ],
     "moduleResolution": "node"
   },
   "exclude": [
