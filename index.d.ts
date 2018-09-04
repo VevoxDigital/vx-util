@@ -234,6 +234,41 @@ declare namespace PackageJSON {
   }
 }
 
+declare interface Math {
+  /** Double PI, a full rotation (e.g. 360 degrees) */
+  PI_2: number
+
+  /** Half PI, a quarter of a rotation (e.g. 90 degrees) */
+  PI_HALF: number
+
+  /** A quarter of PI, an eighth of a rotation (e.g. 45 degrees) */
+  PI_QUARTER: number
+
+  /** The number of degrees in a full rotation  */
+  ROTATION_FULL: number
+
+  /** The number of degrees in half a rotation */
+  ROTATION_HALF: number
+
+  /** The number of degrees in a quarter of a rotation */
+  ROTATION_QUARTER: number
+
+  /** The number of degrees in an eighth of a rotation */
+  ROTATION_EIGHTH: number
+
+  /**
+   * Gets the number of radians for the given number of degrees
+   * @param degrees The number of degrees to convert
+   */
+  rad (degrees: number): number
+
+  /**
+   * Gets the number of degrees for the given number of radians
+   * @param radians The number of radians to convert
+   */
+  deg (radians: number): number
+}
+
 declare module '*/package.json' {
   const packageJson: PackageJSON.IPackage
   export = packageJson
