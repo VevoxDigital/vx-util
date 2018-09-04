@@ -1,7 +1,11 @@
+import * as debug from 'debug'
+
 import { ICloneable } from 'util/cloneable'
 import ISerializeable from 'util/serializeable'
 import OrderedPair from '../ordered/pair'
 import VectorP2f from './p2f'
+
+const d = debug('vx-util:vector:cartesian2f')
 
 /**
  * A floating-point vector 2 value
@@ -25,8 +29,8 @@ implements ICloneable<VectorC2f>, ISerializeable<number> {
    */
   public constructor (x: number, y: number) {
     super (x, y)
-
     this.magnitude = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
+    d('gen magnitude %d from %s', this.magnitude, this.toString())
   }
 
   /** The X value */
@@ -44,7 +48,9 @@ implements ICloneable<VectorC2f>, ISerializeable<number> {
    * @param vector The vector to add
    */
   public add (vector: VectorC2f): VectorC2f {
-    return new VectorC2f(this.x + vector.x, this.y + vector.y)
+    const v = new VectorC2f(this.x + vector.x, this.y + vector.y)
+    d('%s + %s = %s', this.toString(), vector.toString(), v.toString())
+    return v
   }
 
   /**
@@ -52,27 +58,33 @@ implements ICloneable<VectorC2f>, ISerializeable<number> {
    * @param scalar The scalar to scale by
    */
   public scale (scalar: number): VectorC2f {
-    return new VectorC2f(this.x * scalar, this.y * scalar)
+    const v = new VectorC2f(this.x * scalar, this.y * scalar)
+    d('%s * %d = %s', this.toString(), scalar, v.toString())
+    return v
   }
 
   /**
    * Returns a new vector that is the inverse of this one
    */
   public inverse (): VectorC2f {
-    return new VectorC2f(-this.x, -this.y)
+    d('next scale invert', this.toString())
+    return this.scale(-1)
   }
 
   /**
    * Returns a new vector that is perpendicular to this one
    */
   public perpendicular (): VectorC2f {
-    return new VectorC2f(this.y, -this.x)
+    const v = new VectorC2f(this.y, -this.x)
+    d('create %s perpen. to %s', v.toString(), this.toString())
+    return v
   }
 
   /**
    * Creates a new vector that shares the same direction but has a magnitude of one.
    */
   public unit (): VectorC2f {
+    d('next scale unit')
     return this.clone().scale(1 / this.magnitude)
   }
 
@@ -83,18 +95,26 @@ implements ICloneable<VectorC2f>, ISerializeable<number> {
   public toPolar (): VectorP2f {
     const r = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
     let t = Math.atan(this.y / this.x)
+    d('calculated polar (%d,%d) as is', r, t)
 
-    if (this.x > 0 && this.y < 0) t += Math.PI_2
-    else if (this.x < 0) t += Math.PI
+    if (this.x > 0 && this.y < 0) {
+      t += Math.PI_2
+      d('polar is quadrant IV, angle updated to %d', t)
+    } else if (this.x < 0) {
+      t += Math.PI
+      d('polar is quadrant II or III, angle updated to %d', t)
+    }
 
     return new VectorP2f(t, r)
   }
 
   public clone (): VectorC2f {
+    d('clone %s', this.toString())
     return new VectorC2f(this.x, this.y)
   }
 
   public serialize (): IDictionary<number> {
+    d('serialize %s', this.toString())
     return {
       x: this.x,
       y: this.y

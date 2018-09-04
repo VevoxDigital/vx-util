@@ -1,5 +1,9 @@
+import * as debug from 'debug'
+
 import { ICloneable } from 'util/cloneable'
 import ISerializeable from 'util/serializeable'
+
+const d = debug('vx-util:ordered:pair')
 
 /**
  * An ordered pair of objects
@@ -30,6 +34,11 @@ implements ICloneable<OrderedPair<A, B>>, ISerializeable<A | B> {
   }
 
   public clone (): OrderedPair<A, B> {
+    d('clone %s', this.toString())
     return new OrderedPair<A, B>(this.a, this.b)
+  }
+
+  public toString (): string {
+    return `(${this.a},${this.b})`
   }
 }
