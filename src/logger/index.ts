@@ -169,10 +169,13 @@ export class Logger {
 
   /**
    * Creates a new logger parented to this one with the same global.
-   * @param prefix The logger's prefix
+   * @param prefixes The logger's prefix(es)
    * @returns The logger
    */
-  public subLogger (prefix: string): Logger {
+  public subLogger (...prefixes: string[]): Logger {
+    const prefix = prefixes.shift()
+    if (!prefix) return this
+
     let l = this.subLoggers.get(prefix)
 
     if (!l) {
@@ -185,6 +188,6 @@ export class Logger {
       this.subLoggers.set(prefix, l)
     }
 
-    return l
+    return l.subLogger(...prefixes)
   }
 }
