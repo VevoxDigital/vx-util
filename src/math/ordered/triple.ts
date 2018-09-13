@@ -1,7 +1,7 @@
 import * as debug from 'debug'
 
-import { ICloneable } from 'util/cloneable'
-import { ISerializeable } from 'util/serializeable'
+import { ICloneable } from '../../util/cloneable'
+import { ISerializeable } from '../../util/serializeable'
 
 const d = debug('vx-util:ordered:triple')
 
