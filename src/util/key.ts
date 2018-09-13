@@ -1,4 +1,4 @@
-import { OrderedPair } from 'math/ordered/pair'
+import { OrderedPair } from '../math/ordered/pair'
 import { ICloneable } from './cloneable'
 import { ISerializeable } from './serializeable'
 
