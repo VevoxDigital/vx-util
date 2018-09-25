@@ -77,7 +77,7 @@ export class Logger {
     this.parent = parentLogger || this
     this.global = globalLogger || this
 
-    this.debugger = debug(prefix.length ? [ packageName, prefix ].join(':') : prefix)
+    this.debugger = debug(prefix.length ? [ packageName, prefix ].join(':') : packageName)
     this.logger = globalLogger ? globalLogger.logger : createWistonLogger()
 
     this.subLoggers = new Map<string, Logger>()
