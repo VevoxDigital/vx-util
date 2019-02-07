@@ -9,6 +9,9 @@ declare interface IDictionary<T = any> {
  */
 declare type CallbackFunction<R = void> = (...args: any[]) => R
 
+/** A type that can either be something or undefined */
+declare type Optional<T> = T | undefined
+
 /**
  * A specialized type-safe event emitter
  * @param E A map of event data to any value
@@ -78,6 +81,25 @@ declare interface IEventEmitter<E extends IDictionary, K = keyof E> {
    * @returns The list of events
    */
   events (): ReadonlyArray<K | symbol>
+}
+
+/** Functional types */
+declare namespace Functional {
+  // generic functionals
+  /** A general function type */
+  export type Function<T extends any[], V> = (...args: T) => V
+
+  /** A functional type that creates values from no input */
+  export type Producer<V> = Function<[], V>
+
+  /** A functional type that consumes data and returns a void value */
+  export type Consumer<T extends any[]> = Function<T, void>
+
+  /** A functional type that returns a boolean from input */
+  export type Predicate<T extends any[]> = Function<T, boolean>
+
+  /** A functional type that takes no input and no output */
+  export type Operator = Function<[], void>
 }
 
 /** The `package.json` file for yarn/npm */

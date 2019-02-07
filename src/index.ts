@@ -6,22 +6,24 @@ import * as module_util from './util'
 
 export { default as EventEmitter } from './event'
 
-export { Logger, LoggingLevel, createWistonLogger } from './logger'
+export * from './logger'
 
 export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'
 export { default as ProcessWrapper } from './process/wrapper'
 
-export { OrderedPair } from './math/ordered/pair'
-export { OrderedTriple } from './math/ordered/triple'
-export { VectorC2f } from './math/vector/c2f'
-export { VectorP2f } from './math/vector/p2f'
+export * from './math/ordered/pair'
+export * from './math/ordered/triple'
+export * from './math/vector/c2f'
+export * from './math/vector/p2f'
 
-export { ICloneable } from './util/cloneable'
-export { TupleKey } from './util/key'
-export { ISerializeable } from './util/serializeable'
+export * from './util/cloneable'
+export * from './util/comparable'
+export * from './util/index'
+export * from './util/key'
+export * from './util/serializeable'
 
-export { Random } from './random'
+export * from './random'
 
 export const io = module_io
 export const util = module_util
