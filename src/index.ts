@@ -21,9 +21,8 @@ export * from './util/cloneable'
 export * from './util/comparable'
 export * from './util/index'
 export * from './util/key'
+export * from './util/random'
 export * from './util/serializeable'
-
-export * from './random'
 
 export const io = module_io
 export const util = module_util

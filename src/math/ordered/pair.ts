@@ -1,15 +1,10 @@
-import * as debug from 'debug'
 
-import { ICloneable } from '../../util/cloneable'
-import { ISerializeable } from '../../util/serializeable'
-
-const d = debug('vx-util:ordered:pair')
+import { Ordered } from './ordered'
 
 /**
  * An ordered pair of objects
  */
-export class OrderedPair<A, B = A>
-implements ICloneable<OrderedPair<A, B>>, ISerializeable<A | B> {
+export class OrderedPair<A, B = A> extends Ordered<[A, B]> {
 
   /** The first object in the set */
   public readonly a: A
@@ -22,23 +17,12 @@ implements ICloneable<OrderedPair<A, B>>, ISerializeable<A | B> {
    * @param b The second object
    */
   public constructor (a: A, b: B) {
+    super(a, b)
     this.a = a
     this.b = b
   }
 
-  public serialize (): IDictionary<A | B> {
-    return {
-      a: this.a,
-      b: this.b
-    }
-  }
-
   public clone (): OrderedPair<A, B> {
-    d('clone %s', this.toString())
     return new OrderedPair<A, B>(this.a, this.b)
-  }
-
-  public toString (): string {
-    return `(${this.a},${this.b})`
   }
 }

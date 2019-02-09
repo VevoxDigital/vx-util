@@ -15,5 +15,5 @@ export interface IComparable<T> {
      * simply `this.compare(other) === 0`.
      * @param other
      */
-    equal (other: T): boolean
+    equals (other: T): boolean
 }

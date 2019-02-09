@@ -1,15 +1,9 @@
-import * as debug from 'debug'
-
-import { ICloneable } from '../../util/cloneable'
-import { ISerializeable } from '../../util/serializeable'
-
-const d = debug('vx-util:ordered:triple')
+import { Ordered } from './ordered'
 
 /**
  * An ordered set of three objects
  */
-export class OrderedTriple<A, B = A, C = B>
-implements ICloneable<OrderedTriple<A, B, C>>, ISerializeable<A | B | C> {
+export class OrderedTriple<A, B = A, C = B> extends Ordered<[A, B, C]> {
 
   /** The first object in the set */
   public readonly a: A
@@ -25,25 +19,13 @@ implements ICloneable<OrderedTriple<A, B, C>>, ISerializeable<A | B | C> {
    * @param c The third object
    */
   public constructor (a: A, b: B, c: C) {
+    super(a, b, c)
     this.a = a
     this.b = b
     this.c = c
   }
 
-  public serialize (): IDictionary<A | B | C> {
-    return {
-      a: this.a,
-      b: this.b,
-      c: this.c
-    }
-  }
-
   public clone (): OrderedTriple<A, B, C> {
-    d('clone %s', this.toString())
     return new OrderedTriple<A, B, C>(this.a, this.b, this.c)
-  }
-
-  public toString (): string {
-    return `(${this.a},${this.b},${this.c})`
   }
 }
