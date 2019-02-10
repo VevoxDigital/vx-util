@@ -6,6 +6,9 @@
 ***TODO***
 
 ## Changelog
+#### 0.8.1
+`*` Main package field now has the correct extension
+
 #### 0.8.0
 `+` New generic `Ordered` class
 `+` New `ComparableMap` class re-implementing the ECMAScript map methods
