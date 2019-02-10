@@ -10,7 +10,7 @@
     "Matthew Struble <matt@vevox.io>"
   ],
   "scripts": {
-    "make": "./node_modules/.bin/rimraf lib/ && tsc"
+    "make": "./node_modules/.bin/rimraf lib/ && tsc && renamer --find .js --replace .mjs lib/**"
   },
   "publishConfig": {
     "access": "public"
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/debug": "^0.0.30",
     "@types/node": "^10.5.5",
+    "cash-mv": "^0.2.0",
     "rimraf": "^2.6.2",
     "typescript": "^3.3.3"
   },

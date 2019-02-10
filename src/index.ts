@@ -1,7 +1,6 @@
 
 /// <reference path="../index.d.ts" />
 
-import * as module_io from './io'
 import * as module_util from './util'
 
 export { default as EventEmitter } from './event'
@@ -12,19 +11,20 @@ export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'
 export { default as ProcessWrapper } from './process/wrapper'
 
-export * from './math/ordered/pair'
-export * from './math/ordered/triple'
 export * from './math/vector/c2f'
 export * from './math/vector/p2f'
 
+export * from './util/ordered/ordered'
+export * from './util/ordered/pair'
+export * from './util/ordered/triple'
 export * from './util/cloneable'
 export * from './util/comparable'
 export * from './util/index'
-export * from './util/key'
+export * from './util/map'
 export * from './util/random'
+export * from './util/sealable'
 export * from './util/serializeable'
 
-export const io = module_io
 export const util = module_util
 
 Math.PI_2 = Math.PI * 2

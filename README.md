@@ -15,6 +15,8 @@
 `*` Target `esnext` with TypeScript
 `*` `Random` now uses `BigInt` internally, can still yield `number` values
 `*` Rename `IComparable.equal` to `IComparable.equals`
+`*` Output `.mjs` over `.js` for Node's sake
+`-` Remove old `io` and `TupleKey` classes
 
 #### 0.7.0
 `+` Actually started keeping a changelog  
