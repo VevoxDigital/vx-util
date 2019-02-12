@@ -20,6 +20,7 @@
     "@types/debug": "^0.0.30",
     "@types/node": "^10.5.5",
     "cash-mv": "^0.2.0",
+    "renamer": "^1.1.1",
     "rimraf": "^2.6.2",
     "typescript": "^3.3.3"
   },

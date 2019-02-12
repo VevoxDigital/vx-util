@@ -6,6 +6,11 @@
 ***TODO***
 
 ## Changelog
+
+#### 0.8.2
+`*` Correct invalid import for `ICloneable` in `Ordered`
+`*` Fix a missing dev depenency for compile
+
 #### 0.8.1
 `*` Main package field now has the correct extension
 
