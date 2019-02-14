@@ -7,10 +7,10 @@
 export class Random {
 
   /** The high value for the BigInt random */
-  public static readonly HI = (2n ** 48n) - 1n
+  public static readonly HI = BigInt((2 ** 48) - 1)
 
   /** The low value for the BigInt random */
-  public static readonly LO = 0x2875A2E7B175n
+  public static readonly LO = BigInt(0x2875A2E7B175)
 
   // see the wiki article on Lehmer number generators for where these numbers came from
   // this is using numerical values from CRAY's RANF generator.
@@ -39,7 +39,7 @@ export class Random {
   constructor (seed: bigint | number, value?: bigint | number) {
     this.seed = BigInt(seed)
     this.value = value ? BigInt(value) : this.seed % Random.HI
-    if (this.value <= 0) this.value += Random.HI - 1n
+    if (this.value <= 0) this.value += Random.HI - BigInt(1)
   }
 
   /** The current internal value */

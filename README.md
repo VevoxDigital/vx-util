@@ -7,33 +7,36 @@
 
 ## Changelog
 
-#### 0.8.9
+##### 0.8.6
+`*` Use `BigInt` constructor instead of literals to stop the minifier from breaking things
+
+##### 0.8.5
 `*` Correct issue when constructing `Random` objects with no initial value
 
-#### 0.8.4
-`*` Disable interop on module conversion
+##### 0.8.4
+`*` Disable interop on module conversion  
 `*` Correct main field extension again
 
-#### 0.8.3
+##### 0.8.3
 `*` Use `babel` to transpile to CommonJS for Node's sake
 
-#### 0.8.2
-`*` Correct invalid import for `ICloneable` in `Ordered`
+##### 0.8.2
+`*` Correct invalid import for `ICloneable` in `Ordered`  
 `*` Fix a missing dev depenency for compile
 
-#### 0.8.1
+##### 0.8.1
 `*` Main package field now has the correct extension
 
 #### 0.8.0
-`+` New generic `Ordered` class
-`+` New `ComparableMap` class re-implementing the ECMAScript map methods
-`+` New `ISealable` interface
-`*` `OrderedPair` and `OrderedTriple` are now `Ordered` subclasses
-`*` Refractor `Ordered*` classes from `math` to `lib/ordered`
-`*` Target `esnext` with TypeScript
-`*` `Random` now uses `BigInt` internally, can still yield `number` values
-`*` Rename `IComparable.equal` to `IComparable.equals`
-`*` Output `.mjs` over `.js` for Node's sake
+`+` New generic `Ordered` class  
+`+` New `ComparableMap` class re-implementing the ECMAScript map methods  
+`+` New `ISealable` interface  
+`*` `OrderedPair` and `OrderedTriple` are now `Ordered` subclasses  
+`*` Refractor `Ordered*` classes from `math` to `lib/ordered`  
+`*` Target `esnext` with TypeScript  
+`*` `Random` now uses `BigInt` internally, can still yield `number` values  
+`*` Rename `IComparable.equal` to `IComparable.equals`  
+`*` Output `.mjs` over `.js` for Node's sake  
 `-` Remove old `io` and `TupleKey` classes
 
 #### 0.7.0
