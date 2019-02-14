@@ -7,6 +7,9 @@
 
 ## Changelog
 
+#### 0.8.3
+`*` Use `babel` to transpile to CommonJS for Node's sake
+
 #### 0.8.2
 `*` Correct invalid import for `ICloneable` in `Ordered`
 `*` Fix a missing dev depenency for compile

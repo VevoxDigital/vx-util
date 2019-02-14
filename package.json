@@ -1,6 +1,6 @@
 {
   "name": "vx-util",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Core utility library for Vevox projects",
   "main": "lib/index.mjs",
   "types": "lib/index.d.ts",
@@ -10,15 +10,20 @@
     "Matthew Struble <matt@vevox.io>"
   ],
   "scripts": {
-    "make": "./node_modules/.bin/rimraf lib/ && tsc && renamer --find .js --replace .mjs lib/**"
+    "make": "./node_modules/.bin/rimraf lib/ .tmp/ && tsc && babel .tmp/lib --out-dir lib"
   },
   "publishConfig": {
     "access": "public"
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-syntax-bigint": "^7.2.0",
     "@types/debug": "^0.0.30",
     "@types/node": "^10.5.5",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-minify": "^0.5.0",
     "cash-mv": "^0.2.0",
     "renamer": "^1.1.1",
     "rimraf": "^2.6.2",

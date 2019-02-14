@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "src/",
-    "outDir": "lib/",
+    "outDir": ".tmp/lib/",
     "allowJs": false,
     "target": "esnext",
     "strict": true,
