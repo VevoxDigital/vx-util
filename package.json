@@ -1,8 +1,8 @@
 {
   "name": "vx-util",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Core utility library for Vevox projects",
-  "main": "lib/index.mjs",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "https://github.com/VevoxDigital/vx-util",
   "author": "Vevox Digital",

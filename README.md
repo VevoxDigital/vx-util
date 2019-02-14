@@ -7,6 +7,10 @@
 
 ## Changelog
 
+#### 0.8.4
+`*` Disable interop on module conversion
+`*` Correct main field extension again
+
 #### 0.8.3
 `*` Use `babel` to transpile to CommonJS for Node's sake
 

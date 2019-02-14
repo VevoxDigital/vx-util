@@ -1,5 +1,10 @@
 {
     "comments": false,
-    "plugins": [ "transform-es2015-modules-commonjs", "@babel/plugin-syntax-bigint" ],
-    "presets": [ ["minify", { "builtIns": false }] ]
+    "plugins": [
+        [ "transform-es2015-modules-commonjs", { "noInterop": true }],
+        "@babel/plugin-syntax-bigint"
+    ],
+    "presets": [
+        ["minify", { "builtIns": false }]
+    ]
 }
