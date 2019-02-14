@@ -7,6 +7,9 @@
 
 ## Changelog
 
+#### 0.8.9
+`*` Correct issue when constructing `Random` objects with no initial value
+
 #### 0.8.4
 `*` Disable interop on module conversion
 `*` Correct main field extension again

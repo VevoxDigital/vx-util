@@ -38,7 +38,7 @@ export class Random {
   constructor (seed: number, value?: number)
   constructor (seed: bigint | number, value?: bigint | number) {
     this.seed = BigInt(seed)
-    this.value = value ? this.seed % Random.HI : BigInt(value)
+    this.value = value ? BigInt(value) : this.seed % Random.HI
     if (this.value <= 0) this.value += Random.HI - 1n
   }
 
