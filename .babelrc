@@ -2,12 +2,20 @@
     "comments": false,
     "plugins": [
         [ "transform-es2015-modules-commonjs", { "noInterop": true }],
-        "@babel/plugin-syntax-bigint"
-    ],
-    "presets": [
-        [ "minify", {
-            "builtIns": false,
-            "typeConstructors": false
-        } ]
+        "@babel/plugin-syntax-bigint",
+        "minify-constant-folding",
+        "minify-dead-code-elimination",
+        "minify-flip-comparisons",
+        "minify-guarded-expressions",
+        "minify-infinity",
+        "minify-mangle-names",
+        "minify-replace",
+        "minify-simplify",
+        "transform-member-expression-literals",
+        "transform-merge-sibling-variables",
+        "transform-minify-booleans",
+        "transform-property-literals",
+        "transform-simplify-comparison-operators",
+        "transform-undefined-to-void"
     ]
 }

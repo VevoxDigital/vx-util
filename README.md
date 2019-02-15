@@ -7,6 +7,9 @@
 
 ## Changelog
 
+##### 0.8.7
+`*` Fix another series of issues with the minifier
+
 ##### 0.8.6
 `*` Use `BigInt` constructor instead of literals to stop the minifier from breaking things
 
