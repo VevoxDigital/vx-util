@@ -12,6 +12,10 @@ declare type CallbackFunction<R = void> = (...args: any[]) => R
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
 
+declare interface Instanciable<T, A extends any[] = any[]> extends Function {
+  new(...args: A): T // tslint:disable-line callable-types
+}
+
 /**
  * A specialized type-safe event emitter
  * @param E A map of event data to any value

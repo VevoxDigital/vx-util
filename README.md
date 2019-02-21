@@ -7,6 +7,9 @@
 
 ## Changelog
 
+##### 0.8.8
+`+` New `Instanciable` type
+
 ##### 0.8.7
 `*` Fix another series of issues with the minifier
 
