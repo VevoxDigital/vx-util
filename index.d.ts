@@ -12,6 +12,9 @@ declare type CallbackFunction<R = void> = (...args: any[]) => R
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
 
+/** A type that could be a promise or its base value */
+declare type OptionalPromise<T> = T | Promise<T>
+
 declare interface Instanciable<T, A extends any[] = any[]> extends Function {
   new(...args: A): T // tslint:disable-line callable-types
 }

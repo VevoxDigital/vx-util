@@ -7,6 +7,9 @@ export { default as EventEmitter } from './event'
 
 export * from './logger'
 
+export * from './event/event'
+export * from './event/eventhandler'
+
 export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'
 export { default as ProcessWrapper } from './process/wrapper'
