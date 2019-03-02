@@ -8,9 +8,9 @@
 ## Changelog
 
 ##### 0.9.0
-`+` New `Instanciable` generic type
-`+` New `OptionalPromise` generic type
-`+` New `Event` and `EventHandler` classes
+`+` New `Instanciable` generic type  
+`+` New `OptionalPromise` generic type  
+`+` New `Event` and `EventHandler` classes  
 
 ##### 0.8.7
 `*` Fix another series of issues with the minifier
