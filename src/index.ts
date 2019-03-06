@@ -41,3 +41,6 @@ Math.ROTATION_EIGHTH = 45
 
 Math.deg = (r: number): number => r * (Math.ROTATION_HALF / Math.PI)
 Math.rad = (d: number): number => d * (Math.PI / Math.ROTATION_HALF)
+
+/** A no-op function */
+export const NOOP: Functional.Operator = () => {}

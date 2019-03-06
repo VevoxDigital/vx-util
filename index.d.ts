@@ -1,19 +1,36 @@
 
 /** A mapping of string keys to a specific value type */
 declare interface IDictionary<T = any> {
-  [key: string]: T
+  [key: string]: Optional<T>
 }
+
+/** A mapping of numeric keys to a specific value type */
+declare interface IArrayMap<T = any> {
+  [key: number]: Optional<T>
+}
+
+/** A mapping of both string and numeric keys to a given value type */
+declare type IPlainObject<S = any, N = S> = IDictionary<S> & IArrayMap<N>
 
 /**
  * A function acting as a listener for a variable number of arguments
  */
-declare type CallbackFunction<R = void> = (...args: any[]) => R
+declare type CallbackFunction<R = void> = Functional.Function<any[], R>
 
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
 
+/** A type that can either be something or null */
+declare type Nullable<T> = T | null
+
+/** A type that can either be something, null, or undefined */
+declare type Nilable<T> = T | null | undefined
+
 /** A type that could be a promise or its base value */
-declare type OptionalPromise<T> = T | Promise<T>
+declare type Awaitable<T> = T | Promise<T>
+
+/** A type that is optionally a partial of another type */
+declare type Overrides<T> = Optional<Partial<T>>
 
 declare interface Instanciable<T, A extends any[] = any[]> extends Function {
   new(...args: A): T // tslint:disable-line callable-types

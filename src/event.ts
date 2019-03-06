@@ -55,6 +55,7 @@ export default class EventEmitterImpl<E extends IDictionary, K = keyof E> implem
     const listeners = this.handlers.get(event) || { }
     for (const id of Object.getOwnPropertySymbols(listeners)) {
       const l = listeners[id as any as string]
+      if (!l) continue
       l.func(...args)
       if (l.once) delete listeners[id as any as string]
     }

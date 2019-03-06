@@ -1,4 +1,4 @@
-import { ISealable } from 'util/sealable'
+import { ISealable } from '../util/sealable'
 
 export type EventHookDecay = number | Functional.Producer<number | boolean>
 export type EventHookHandler<E extends Event, T> = Functional.Function<[T, E], void | boolean>

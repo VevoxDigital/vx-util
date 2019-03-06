@@ -13,6 +13,6 @@ export class IEventHandler<E extends IDictionary<Event>> {
      * @param name The name
      */
     public event (name: keyof E): Event {
-        return this.eventMap[name]
+        return this.eventMap[name]!
     }
 }

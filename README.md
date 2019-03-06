@@ -7,7 +7,21 @@
 
 ## Changelog
 
-##### 0.9.0
+##### 0.10.0
+`+` New `Nullable` type  
+`+` New `Nilable` type  
+`+` New `IPlainObject` type
+`+` New `Overrides` type
+`+` New `IArrayMap` interface
+`+` New `NOOP` global constant: a no-op function
+`*` `IDictionary` interface now has `Optional` values
+`*` Rename `OptionalPromise` to `Awaitable`  
+`*` Update `CallbackFunction` type to use `Functional` types  
+
+##### 0.9.1
+`*` Correct bad import in `event\event`  
+
+#### 0.9.0
 `+` New `Instanciable` generic type  
 `+` New `OptionalPromise` generic type  
 `+` New `Event` and `EventHandler` classes  
