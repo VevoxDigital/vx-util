@@ -1,6 +1,12 @@
 
-# vxUtil
-**Core Utility library for Vevox TypeScript/JavaScript projects**
+# vx-util
+### Core Utility library for Vevox TypeScript/JavaScript projects
+
+[![NPM](https://img.shields.io/npm/v/vx-util.svg?style=for-the-badge)](https://npmjs.org/vx-util)
+[![License](https://img.shields.io/npm/l/vx-util.svg?style=for-the-badge)](LICENSE)
+[![Lab](https://img.shields.io/static/v1.svg?style=for-the-badge&label=lab&message=open-source&color=informational)](https://lab.vevox.io/oepn-source/vx-util)
+
+*Please Submit any issues [in the Vevox Lab](https://lab.vevox.io/open-source/vx-util).*
 
 ## Docs
 ***TODO***
@@ -10,11 +16,11 @@
 ##### 0.10.0
 `+` New `Nullable` type  
 `+` New `Nilable` type  
-`+` New `IPlainObject` type
-`+` New `Overrides` type
-`+` New `IArrayMap` interface
-`+` New `NOOP` global constant: a no-op function
-`*` `IDictionary` interface now has `Optional` values
+`+` New `IPlainObject` type  
+`+` New `Overrides` type  
+`+` New `IArrayMap` interface  
+`+` New `NOOP` global constant: a no-op function  
+`*` `IDictionary` interface now has `Optional` values  
 `*` Rename `OptionalPromise` to `Awaitable`  
 `*` Update `CallbackFunction` type to use `Functional` types  
 
