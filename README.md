@@ -13,7 +13,11 @@
 
 ## Changelog
 
-##### 0.10.0
+##### 0.10.1
+`*` Bump dependency versions for `lodash` vulnerability  
+`-` Remove unused `cash-mv` dependency for `lodash` vulnerability  
+
+#### 0.10.0
 `+` New `Nullable` type  
 `+` New `Nilable` type  
 `+` New `IPlainObject` type  
