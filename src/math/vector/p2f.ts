@@ -1,8 +1,8 @@
 import * as debug from 'debug'
 
 import { ICloneable } from '../../util/cloneable'
-import { ISerializeable } from '../../util/serializeable'
 import { OrderedPair } from '../../util/ordered/pair'
+import { ISerializeable } from '../../util/serializeable'
 import { VectorC2f } from './c2f'
 
 const d = debug('vx-util:vector:polar2f')
