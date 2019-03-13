@@ -32,6 +32,18 @@ declare type Awaitable<T> = T | Promise<T>
 /** A type that is optionally a partial of another type */
 declare type Overrides<T> = Optional<Partial<T>>
 
+/** All fields in `U` removed from `T` */
+declare type ExcludeFields<T, U extends keyof T> = { [K in Exclude<keyof T, U>]: T[K] }
+
+/** Only fields in `U` from `T` */
+declare type ExtractFields<T, U extends keyof T> = { [K in Extract<keyof T, U>]: T[K] }
+
+/** `T`, but with all fields `U` marked required (and others untouched) */
+declare type RequiredFields<T, U extends keyof T> = T & ExtractFields<Required<T>, U>
+
+/** An object who extends `T`, where keys `U` are required and others are optional */
+declare type Options<T, U extends keyof T = never> = RequiredFields<Partial<T>, U>
+
 declare interface Instanciable<T, A extends any[] = any[]> extends Function {
   new(...args: A): T // tslint:disable-line callable-types
 }

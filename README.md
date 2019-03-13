@@ -13,6 +13,12 @@
 
 ## Changelog
 
+#### 0.11.0
+`+` New `Fields` and `Options` types  
+`*` Refactor `Event` to `Signal` (and associated methods) for clarity reasons  
+`*` Move `util` imports around  
+`-` Deprecate `EventHandlerImpl` class (to be replaced later)  
+
 ##### 0.10.1
 `*` Bump dependency versions for `lodash` vulnerability  
 `-` Remove unused `cash-mv` dependency for `lodash` vulnerability  
