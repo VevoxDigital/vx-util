@@ -2,6 +2,7 @@
 import * as debug from 'debug'
 import { format } from 'util'
 import * as winston from 'winston'
+import { Signal } from '../event/signal'
 
 /**
  * The logging level for a specific message
@@ -64,6 +65,14 @@ export class Logger {
   /** The logger's prefix */
   public readonly prefix: string
 
+  /**
+   * *Signal*: A message was emitted from this logger
+   * @param message The message emitted
+   * @param level The level at which the message was emitted
+   * @param prefix The prefix/namespace of the message
+   */
+  public readonly message = new Signal<[string, LoggingLevel, string]>()
+
   protected readonly logger: winston.Logger
 
   private readonly debugger: debug.IDebugger
@@ -91,9 +100,9 @@ export class Logger {
   public consoleLoggingLevel (level?: LoggingLevel): LoggingLevel {
     if (level && this.global === this) {
       this.consoleLevel = level
-      const console = this.logger.transports.find(transport => transport instanceof winston.transports.Console)
-      if (console) {
-        console.level = this.consoleLevel
+      const consoleTransport = this.logger.transports.find(transport => transport instanceof winston.transports.Console)
+      if (consoleTransport) {
+        consoleTransport.level = this.consoleLevel
         this.debug('update console level "%s", found transport', level)
       } else this.debug('update console level "%s", no transport found in %O', level, this.logger.transports)
     }
@@ -108,9 +117,13 @@ export class Logger {
    * @param data Optionally, data to format the message with
    */
   public log (level: LoggingLevel, message: string, ...data: any[]): void {
+    const formatted = data.length ? format(message, ...data) : message
+
     if (level === LoggingLevel.DEBUG) this.debugger(message, ...data)
-    else if (this.global === this) this.logger.log(level, data.length ? format(message, ...data) : message)
-    else this.global.log(level, format('[%s] ' + message, this.prefix, ...data))
+    else if (this.global === this) this.logger.log(level, formatted)
+    else this.global.log(level, format('[%s] ' + formatted, this.prefix))
+
+    this.message.fire(formatted, level, this.prefix)
   }
 
   /**

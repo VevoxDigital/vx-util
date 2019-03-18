@@ -1,8 +1,11 @@
 
-/** A mapping of string keys to a specific value type */
+/** A mapping of string keys to possible values of type `T` */
 declare interface IDictionary<T = any> {
   [key: string]: Optional<T>
 }
+
+/** A mapping of string keys to a type `T` */
+declare type Dictionary<T = any> = { [key: string]: T }
 
 /** A mapping of numeric keys to a specific value type */
 declare interface IArrayMap<T = any> {
@@ -19,6 +22,9 @@ declare type CallbackFunction<R = void> = Functional.Function<any[], R>
 
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
+
+/** Removes `undefined` from a given type */
+declare type Certain<T> = Exclude<T, undefined>
 
 /** A type that can either be something or null */
 declare type Nullable<T> = T | null
@@ -44,7 +50,7 @@ declare type RequiredFields<T, U extends keyof T> = T & ExtractFields<Required<T
 /** An object who extends `T`, where keys `U` are required and others are optional */
 declare type Options<T, U extends keyof T = never> = RequiredFields<Partial<T>, U>
 
-declare interface Instanciable<T, A extends any[] = any[]> extends Function {
+declare interface Instanciable<T, A extends any[] = []> extends Function {
   new(...args: A): T // tslint:disable-line callable-types
 }
 

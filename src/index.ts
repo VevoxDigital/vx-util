@@ -8,6 +8,7 @@ export { default as EventEmitter } from './event'
 export * from './logger'
 
 export * from './event/signal'
+export * from './event/signal-cancellable'
 
 export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'

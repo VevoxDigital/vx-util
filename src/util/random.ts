@@ -1,3 +1,4 @@
+import { Signal } from '../event/signal'
 
 /**
  * A Lehmer Seeded Psuedo-Random number generator. Two instances
@@ -27,6 +28,12 @@ export class Random {
   /** This random's seed */
   public readonly seed: bigint
 
+  /**
+   * *Signal*: A new value was generated from this random
+   * @param value The generated value
+   */
+  public readonly generated = new Signal<[bigint]>()
+
   private value: bigint
 
   /**
@@ -52,7 +59,9 @@ export class Random {
    */
   public next (bound?: number | bigint): bigint {
     this.value = this.value * Random.LO % Random.HI
-    return bound ? this.value % BigInt(bound) : this.value
+    const next = bound ? this.value % BigInt(bound) : this.value
+    this.generated.fire(next)
+    return next
   }
 
   /**

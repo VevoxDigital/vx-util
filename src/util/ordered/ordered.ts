@@ -1,4 +1,4 @@
-import { ICloneable } from '../cloneable';
+import { ICloneable } from '../cloneable'
 
 /**
  * A generic ordered value of a specific tuple type
@@ -6,10 +6,13 @@ import { ICloneable } from '../cloneable';
 export class Ordered<T extends any[]>
 implements ICloneable<Ordered<T>> {
 
+    [index: number]: T[number]
+
     private readonly values: T
 
     public constructor (...values: T) {
         this.values = values
+        for (let i = 0; i < values.length; i++) this[i] = values[i]
     }
 
     /**
@@ -17,7 +20,7 @@ implements ICloneable<Ordered<T>> {
      * @param i The index
      */
     public get <N extends number> (i: N): T[N] {
-        return this.values[i]
+        return this[i]
     }
 
     public clone (): Ordered<T> {

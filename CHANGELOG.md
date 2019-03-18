@@ -1,3 +1,10 @@
+#### 0.12.0
+`+` New `CancellableSignal` variant  
+`+` New `Certain` type  
+`*` Added signals to `ComparableMap`, `Random`, and `Logger`  
+`*` Changes to `Ordered` to allow indexing (not type-safe yet)  
+`*` Default a few functional types to empty arrays instead of `any[]`.
+
 #### 0.11.0
 `+` New `Fields` and `Options` types  
 `*` Refactor `Event` to `Signal` (and associated methods) for clarity reasons  

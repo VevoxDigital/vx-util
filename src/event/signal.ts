@@ -1,6 +1,6 @@
 import { ISealable } from '../util/sealable'
 
-export type SlotDecay = number | Functional.Producer<number | boolean>
+export type SlotDecay = number | Functional.Producer<boolean>
 export type Slot<T extends any[]> = (data: Signal<T>, ...args: T) => boolean | void
 
 export interface ISlot<T extends any[]> {
@@ -19,10 +19,10 @@ implements ISealable {
     private _sealed = false
 
     /**
-     * Hooks a function handler to this event. A decay can be provided as a number of times until the handler
-     * unhooks (or a function that returns such) or a function returning a boolean value (true will be unhooked)
+     * Hooks a function handler to this event. A decay can be provided as a number of times until
+     * the handler or a function returning a boolean value (true will be unhooked)
      * @param slot The handler to hook
-     * @param decay Optionally, how long before this handler unhooks
+     * @param decay Optionally, when to unhook this handler
      */
     public connect (slot: Slot<T>, decay?: SlotDecay): this {
         if (this._sealed) throw new Error('Cannot attach additional slots to a sealed signal')
@@ -103,9 +103,6 @@ implements ISealable {
         const hook = this._slots[index]
         if (hook.decay === undefined) return false
         else if (typeof hook.decay === 'number') return --hook.decay <= 0
-        else {
-            const val = hook.decay()
-            return typeof val === 'number' ? val <= 0 : val
-        }
+        else return hook.decay()
     }
 }

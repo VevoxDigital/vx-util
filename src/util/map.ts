@@ -1,7 +1,8 @@
+import { CancellableSignal } from '../event/signal-cancellable'
 import { IComparable } from './comparable'
-import { ISealable } from './sealable'
 import { OrderedPair } from './ordered/pair'
-import { OrderedTriple } from './ordered/triple';
+import { OrderedTriple } from './ordered/triple'
+import { ISealable } from './sealable'
 
 export interface IComparableMapOptions {
     /** Allows this map to be cleared */
@@ -23,6 +24,26 @@ implements Map<K, V>, ISealable {
 
     public readonly [Symbol.toStringTag] = ComparableMap.name
 
+    /**
+     * *Signal*: A value in this map was updated
+     * @param value The new value
+     * @param key The key where the update happened
+     * @param oldValue The old value, if any
+     */
+    public readonly updated = new CancellableSignal<[V, K, Optional<V>]>()
+
+    /**
+     * *Signal*: A value was deleted from this map
+     * @param value The deleted value
+     * @param key The deleted key
+     */
+    public readonly deleted = new CancellableSignal<[V, K]>()
+
+    /**
+     * *Signal*: This map was cleared
+     */
+    public readonly cleared = new CancellableSignal<[]>()
+
     private isRegisterSealed: boolean = false
     private readonly pairs: Array<OrderedPair<K, V>> = [ ]
 
@@ -38,7 +59,7 @@ implements Map<K, V>, ISealable {
         return this.pairs.length
     }
 
-    public *[Symbol.iterator](): IterableIterator<[K, V]> {
+    public *[Symbol.iterator] (): IterableIterator<[K, V]> {
         for (const pair of this.pairs) yield [pair.a, pair.b]
     }
 
@@ -47,13 +68,13 @@ implements Map<K, V>, ISealable {
     }
 
     public clear (): void {
-        this.pairs.length = 0
+        this.cleared.try(() => this.pairs.length = 0)
     }
 
     public delete (key: K): boolean {
         const index = this.getIndex(key)
-        if (index) this.pairs.splice(index.a, 1)
-        return !!index
+        if (index) return !!this.deleted.try(() => this.pairs.splice(index.a, 1), index.c, key)
+        return false
     }
 
     public entries (): IterableIterator<[K, V]> {
@@ -70,21 +91,23 @@ implements Map<K, V>, ISealable {
     }
 
     public *keys (): IterableIterator<K> {
-        for (const [k,] of this) yield k
+        for (const [k] of this) yield k
     }
 
     public set (key: K, val: V): this {
         const existing = this.getIndex(key)
         const pair = new OrderedPair<K, V>(key, val)
 
-        if (existing) this.pairs[existing.a] = pair
-        else this.pairs.push(pair)
+        this.updated.try(() => {
+            if (existing) this.pairs[existing.a] = pair
+            else this.pairs.push(pair)
+        }, val, key, existing ? existing.c : undefined)
 
         return this
     }
 
     public *values (): IterableIterator<V> {
-        for (const [,v] of this) yield v
+        for (const [, v] of this) yield v
     }
 
     public has (key: K): boolean {
