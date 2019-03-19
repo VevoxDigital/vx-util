@@ -18,6 +18,11 @@ implements ISealable {
 
     private _sealed = false
 
+    /** A callback function that fires this signal */
+    public get callback (): Functional.Consumer<T> {
+        return (...args: T) => this.fire(...args)
+    }
+
     /**
      * Hooks a function handler to this event. A decay can be provided as a number of times until
      * the handler or a function returning a boolean value (true will be unhooked)
