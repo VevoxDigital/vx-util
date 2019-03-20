@@ -2,10 +2,10 @@
 /// <reference path="../index.d.ts" />
 
 import * as util from './util'
+export { util }
 
-export { default as EventEmitter } from './event'
-
-export * from './logger'
+export * from './logger/logger'
+export * from './logger/logger-global'
 
 export * from './event/signal'
 export * from './event/signal-cancellable'
@@ -17,7 +17,6 @@ export { default as ProcessWrapper } from './process/wrapper'
 export * from './math/vector/c2f'
 export * from './math/vector/p2f'
 
-export { util }
 export * from './util/ordered/ordered'
 export * from './util/ordered/pair'
 export * from './util/ordered/triple'

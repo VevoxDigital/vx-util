@@ -1,3 +1,8 @@
+#### 0.13.0
+`+` New `GlobalLogger`  
+`+` Return of the `.editorconfig`  
+`*` Overhaul `Logger` class  
+
 #### 0.12.0
 `+` New `CancellableSignal` variant  
 `+` New `Certain` type  

@@ -54,6 +54,11 @@ declare interface Instanciable<T, A extends any[] = []> extends Function {
   new(...args: A): T // tslint:disable-line callable-types
 }
 
+/** A type with private/protected members stripped */
+declare type AsInterface<T> = {
+    [P in keyof T]: T[P]
+}
+
 /**
  * A specialized type-safe event emitter
  * @param E A map of event data to any value
