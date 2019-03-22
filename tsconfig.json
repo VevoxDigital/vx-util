@@ -3,7 +3,7 @@
     "baseUrl": "src/",
     "outDir": ".tmp/lib/",
     "allowJs": false,
-    "target": "esnext",
+    "target": "es6",
     "strict": true,
     "declaration": true,
     "declarationDir": "lib/",
@@ -13,7 +13,7 @@
     "noUnusedLocals": true,
     "removeComments": false,
     "downlevelIteration": true,
-    "lib": [ "esnext" ],
+    "lib": [ "es6" ],
     "moduleResolution": "node"
   },
   "exclude": [

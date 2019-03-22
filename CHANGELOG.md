@@ -1,3 +1,8 @@
+# Beta Releases
+#### 0.14.0
+`*` Fall back to Node v10 and `es6`  
+`*` `Random` now uses `number` again instead of `BigInt`  
+
 #### 0.13.0
 `+` New `GlobalLogger`  
 `+` Return of the `.editorconfig`  
