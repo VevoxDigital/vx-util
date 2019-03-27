@@ -11,7 +11,7 @@ export interface ISlot<T extends any[]> {
     decay?: SlotDecay
 }
 
-export class Signal<T extends any[]>
+export class Signal<T extends any[] = []>
 implements ISealable {
 
     private readonly _slots: Array<ISlot<T>> = []
@@ -28,10 +28,12 @@ implements ISealable {
      * the handler or a function returning a boolean value (true will be unhooked)
      * @param slot The handler to hook
      * @param decay Optionally, when to unhook this handler
+     * @param thisArg An argument for bindings to `this`
      */
-    public connect (slot: Slot<T>, decay?: SlotDecay): this {
+    public connect (slot: Slot<T>, decay?: SlotDecay, thisArg: any = this): this {
         if (this._sealed) throw new Error('Cannot attach additional slots to a sealed signal')
 
+        slot = slot.bind(thisArg)
         this._slots.push({ slot, decay })
         return this
     }
@@ -41,8 +43,8 @@ implements ISealable {
      * @param handler The handler to hook
      * @see {@link #connect}
      */
-    public connectOnce (slot: Slot<T>): this {
-        return this.connect(slot, 1)
+    public connectOnce (slot: Slot<T>, thisArg?: any): this {
+        return this.connect(slot, 1, thisArg)
     }
 
     /**
@@ -50,8 +52,8 @@ implements ISealable {
      * @param slots The slots
      * @see {@link #connect}
      */
-    public connectMany (slots: Array<Pick<ISlot<T>, 'slot' | 'decay'>>): this {
-        slots.forEach(slot => this.connect(slot.slot, slot.decay))
+    public connectMany (slots: Array<Pick<ISlot<T>, 'slot' | 'decay'>>, thisArg?: any): this {
+        slots.forEach(slot => this.connect(slot.slot, slot.decay, thisArg))
         return this
     }
 
