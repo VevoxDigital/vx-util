@@ -4,7 +4,9 @@ interface IResolverValue {
     format: string
 }
 
-export async function resolve(specifier: string, parentModuleURL: string, defaultResolver: Functional.Function<[string, string], IResolverValue>): Promise<IResolverValue> {
+export async function resolve (specifier: string, parentModuleURL: string,
+                               defaultResolver: Functional.Operator<[string, string], IResolverValue>
+                               ): Promise<IResolverValue> {
     const resolved = defaultResolver!(specifier, parentModuleURL)
     const { url } = resolved
 

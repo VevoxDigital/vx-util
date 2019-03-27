@@ -17,8 +17,9 @@ declare type IPlainObject<S = any, N = S> = IDictionary<S> & IArrayMap<N>
 
 /**
  * A function acting as a listener for a variable number of arguments
+ * @deprecated
  */
-declare type CallbackFunction<R = void> = Functional.Function<any[], R>
+declare type CallbackFunction<R = void> = Functional.Operator<any[], R>
 
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
@@ -50,6 +51,7 @@ declare type RequiredFields<T, U extends keyof T> = T & ExtractFields<Required<T
 /** An object who extends `T`, where keys `U` are required and others are optional */
 declare type Options<T, U extends keyof T = never> = RequiredFields<Partial<T>, U>
 
+/** An object that can be instanced (i.e. new'ed) into a given type, accepting the given arguments to do so */
 declare interface Instanciable<T, A extends any[] = []> extends Function {
   new(...args: A): T // tslint:disable-line callable-types
 }
@@ -133,26 +135,38 @@ declare interface IEventEmitter<E extends IDictionary, K = keyof E> {
 /** Functional types */
 declare namespace Functional {
   // generic functionals
-  /** A general function type */
-  export type Function<T extends any[], V> = (...args: T) => V
 
   /** A functional type that creates values from no input */
-  export type Producer<V> = Function<[], V>
+  export type Producer<V> = Operator<[], V>
 
   /** A functional type that consumes data and returns a void value */
-  export type Consumer<T extends any[]> = Function<T, void>
+  export type Consumer<T extends any[]> = Operator<T>
 
   /** A functional type that returns a boolean from input */
-  export type Predicate<T extends any[]> = Function<T, boolean>
+  export type Predicate<T extends any[]> = Operator<T, boolean>
 
-  /** A functional type that takes no input and no output */
-  export type Operator = Function<[], void>
+  /** A functional that *can* a given input and *can* process it to an output */
+  export type Operator<T extends any[] = [], V = void> = (...args: T) => V
+}
+
+declare namespace JSON {
+  /** Valid value types for JSON */
+  export type Value = string | number | boolean | null | ValueArray | ValueDictionary
+
+  /** An array of JSON values */
+  export interface ValueArray extends Array<Value> { }
+
+  /** A dictionary of JSON values */
+  export interface ValueDictionary extends IDictionary<Value> { }
+}
+
+declare interface JSON {
+  parse (text: string): JSON.Value
 }
 
 /** The `package.json` file for yarn/npm */
 declare namespace PackageJSON {
-  export interface IPackage {
-    [index: string]: any
+  export interface IPackage extends JSON.ValueDictionary {
 
     /** The package's internal name */
     readonly name: string
@@ -245,7 +259,7 @@ declare namespace PackageJSON {
     readonly workspaces?: string[]
   }
 
-  export interface IPackageAuthor {
+  export interface IPackageAuthor extends JSON.ValueDictionary {
     /** The author's name */
     name: string
 
@@ -256,7 +270,7 @@ declare namespace PackageJSON {
     homepage?: string
   }
 
-  export interface IPackageBugs {
+  export interface IPackageBugs extends JSON.ValueDictionary {
     /** An email to send bugs to */
     email: string
 
@@ -265,7 +279,7 @@ declare namespace PackageJSON {
   }
 
   /** The location of certain package directories */
-  export interface IPackageDirectories {
+  export interface IPackageDirectories extends JSON.ValueDictionary {
     lib?: string
     bin?: string
     man?: string
@@ -274,13 +288,13 @@ declare namespace PackageJSON {
   }
 
   /** The engines this package is designed for */
-  export interface IPackageEngines {
+  export interface IPackageEngines extends JSON.ValueDictionary {
     node?: string
     npm?: string
   }
 
   /** The configuration data managed by NPM */
-  export interface IPackageConfig {
+  export interface IPackageConfig extends JSON.ValueDictionary {
     /** The NPM namespace for the config command */
     name?: string
 
@@ -289,12 +303,12 @@ declare namespace PackageJSON {
   }
 
   /** The publishing configuration this package */
-  export interface IPackagePublishConfig {
+  export interface IPackagePublishConfig extends JSON.ValueDictionary {
     registry?: string
   }
 
   /** A project repository */
-  export interface IPackageRepository {
+  export interface IPackageRepository extends JSON.ValueDictionary {
     /** The type of repository */
     type: string
 

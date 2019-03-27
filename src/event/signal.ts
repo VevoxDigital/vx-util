@@ -52,7 +52,7 @@ implements ISealable {
      * @param slots The slots
      * @see {@link #connect}
      */
-    public connectMany (slots: Array<Pick<ISlot<T>, 'slot' | 'decay'>>, thisArg?: any): this {
+    public connectMany (slots: Array<ISlot<T>>, thisArg?: any): this {
         slots.forEach(slot => this.connect(slot.slot, slot.decay, thisArg))
         return this
     }

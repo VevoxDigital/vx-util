@@ -1,4 +1,10 @@
 # Beta Releases
+### 0.14.1
+`+` Added some more docs to undocumented types  
+`+` Added an optional `thisArg` option for `Signal`s  
+`*` Adjust typings on `JSON` global interface and `PackageJSON.IPackage`  
+`-` Remove `Functional.Function` in favor of `Functional.Operator`  
+
 #### 0.14.0
 `*` Fall back to Node v10 and `es6`  
 `*` `Random` now uses `number` again instead of `BigInt`  
