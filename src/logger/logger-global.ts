@@ -103,6 +103,10 @@ export class GlobalLogger implements AsInterface<Logger> {
         this._logger.transports[0].level = level
     }
 
+    public get internalLogger (): winston.Logger {
+      return this._logger
+    }
+
     public child (name: string): Logger {
         return new Logger(this, name)
     }
