@@ -1,4 +1,7 @@
 # Beta Releases
+### 0.14.2
+`*` Add a public accessor for the global logger's internal logger  
+
 ### 0.14.1
 `+` Added some more docs to undocumented types  
 `+` Added an optional `thisArg` option for `Signal`s  
