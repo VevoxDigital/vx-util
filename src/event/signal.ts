@@ -12,7 +12,7 @@ export interface ISlot<T extends any[]> {
 }
 
 export class Signal<T extends any[] = []>
-implements ISealable {
+implements ISealable, Iterable<ISlot<T>> {
 
     private readonly _slots: Array<ISlot<T>> = []
 
@@ -36,6 +36,20 @@ implements ISealable {
         slot = slot.bind(thisArg)
         this._slots.push({ slot, decay })
         return this
+    }
+
+    /**
+     * Returns an async iterator that yields every time this signal is fired
+     */
+    public async *connectAsync (): AsyncIterableIterator<T> {
+      while (true) yield this.connectOnceAsync()
+    }
+
+    /**
+     * Returns a promise that is resolved the next time this signal is fired
+     */
+    public connectOnceAsync (): Promise<T> {
+      return new Promise<T>(resolve => this.connectOnce((_signal, ...args: T) => resolve(args)))
     }
 
     /**
