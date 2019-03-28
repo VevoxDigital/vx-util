@@ -1,4 +1,5 @@
 import { ISealable } from '../util/sealable'
+import { SignalSlotException } from './signal-exception'
 
 export type SlotDecay = number | Functional.Producer<boolean>
 export type Slot<T extends any[]> = (data: Signal<T>, ...args: T) => boolean | void
@@ -77,8 +78,10 @@ implements ISealable, Iterable<ISlot<T>> {
      */
     public fire (...data: T): boolean {
         for (let i = 0; i < this._slots.length; i++) {
+          try {
             if (this._slots[i].slot(this, ...data)) return false
             this.decay(i)
+          } catch (err) { throw new SignalSlotException(i).causedBy(err) }
         }
         return true
     }
