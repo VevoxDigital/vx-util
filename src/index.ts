@@ -8,7 +8,9 @@ export * from './logger/logger'
 export * from './logger/logger-global'
 
 export * from './event/signal'
-export * from './event/signal-cancellable'
+export * from './event/signal-prefix'
+
+export * from './exception'
 
 export { default as ProcessMain } from './process'
 export { default as ProcessMessage } from './process/message'

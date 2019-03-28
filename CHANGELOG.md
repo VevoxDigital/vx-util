@@ -1,6 +1,7 @@
 # Beta Releases
 ### 0.15.0
 `+` New Async methods for `Signal`  
+`+` New `Exception` class  
 `*` Refactor `CancellableSignal` to `PrefixedSignal`, make some behavioral changes to it  
 `*` Update CHANGELOG format  
 

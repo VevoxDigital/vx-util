@@ -1,4 +1,4 @@
-import { CancellableSignal } from '../event/signal-cancellable'
+import { PrefixedSignal } from '../event/signal-prefix'
 import { IComparable } from './comparable'
 import { OrderedPair } from './ordered/pair'
 import { OrderedTriple } from './ordered/triple'
@@ -30,19 +30,19 @@ implements Map<K, V>, ISealable {
      * @param key The key where the update happened
      * @param oldValue The old value, if any
      */
-    public readonly updated = new CancellableSignal<[V, K, Optional<V>]>()
+    public readonly updated = new PrefixedSignal<[V, K, Optional<V>]>()
 
     /**
      * *Signal*: A value was deleted from this map
      * @param value The deleted value
      * @param key The deleted key
      */
-    public readonly deleted = new CancellableSignal<[V, K]>()
+    public readonly deleted = new PrefixedSignal<[V, K]>()
 
     /**
      * *Signal*: This map was cleared
      */
-    public readonly cleared = new CancellableSignal<[]>()
+    public readonly cleared = new PrefixedSignal<[]>()
 
     private isRegisterSealed: boolean = false
     private readonly pairs: Array<OrderedPair<K, V>> = [ ]
