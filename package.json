@@ -11,7 +11,7 @@
     "Matthew Struble <matt@vevox.io>"
   ],
   "scripts": {
-    "make": "tsc --noEmit && ./node_modules/.bin/rimraf lib/ .tmp/ && tsc && babel .tmp/lib --out-dir lib",
+    "make": "./node_modules/.bin/rimraf lib/ .tmp/ && tsc && babel .tmp/lib --out-dir lib",
     "validate": "tsc --noEmit"
   },
   "publishConfig": {
