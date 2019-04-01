@@ -2,15 +2,20 @@ import { ISealable } from '../util/sealable'
 import { SignalSlotException } from './signal-exception'
 
 export type SlotDecay = number | Functional.Producer<boolean>
-export type Slot<T extends any[]> = (data: Signal<T>, ...args: T) => boolean | void
+export type Slot<T extends any[]> = (data: Signal<T>, ...args: T) => Awaitable<boolean | void>
 
 export interface ISlot<T extends any[]> {
-    /** The slot function */
-    slot: Slot<T>
+  /** The slot function */
+  slot: Slot<T>
 
-    /** A value deciding when a hook should decay */
-    decay?: SlotDecay
+  /** A value deciding when a hook should decay */
+  decay?: SlotDecay
+
+  /** Whether or not to treat this slot as async */
+  async: boolean
 }
+
+export type ConnectionOptions<T extends any[]> = Partial<ExcludeFields<ISlot<T>, 'slot'> & { thisArg: any }>
 
 export class Signal<T extends any[] = []>
 implements ISealable, Iterable<ISlot<T>> {
@@ -27,15 +32,16 @@ implements ISealable, Iterable<ISlot<T>> {
     /**
      * Hooks a function handler to this event. A decay can be provided as a number of times until
      * the handler or a function returning a boolean value (true will be unhooked)
+     * Note that, if a slot returns a promise and is not marked as async, it will cause the signal
+     * to fail to fire successfully.
      * @param slot The handler to hook
-     * @param decay Optionally, when to unhook this handler
-     * @param thisArg An argument for bindings to `this`
+     * @param opts Options for the connection
      */
-    public connect (slot: Slot<T>, decay?: SlotDecay, thisArg: any = this): this {
+    public connect (slot: Slot<T>, opts: ConnectionOptions<T> = {}): this {
         if (this._sealed) throw new Error('Cannot attach additional slots to a sealed signal')
 
-        slot = slot.bind(thisArg)
-        this._slots.push({ slot, decay })
+        slot = slot.bind(opts.thisArg || this)
+        this._slots.push({ slot, decay: opts.decay, async: !!opts.async })
         return this
     }
 
@@ -59,7 +65,7 @@ implements ISealable, Iterable<ISlot<T>> {
      * @see {@link #connect}
      */
     public connectOnce (slot: Slot<T>, thisArg?: any): this {
-        return this.connect(slot, 1, thisArg)
+      return this.connect(slot, { decay: 1, thisArg })
     }
 
     /**
@@ -67,23 +73,45 @@ implements ISealable, Iterable<ISlot<T>> {
      * @param slots The slots
      * @see {@link #connect}
      */
-    public connectMany (slots: Array<ISlot<T>>, thisArg?: any): this {
-        slots.forEach(slot => this.connect(slot.slot, slot.decay, thisArg))
-        return this
+    public connectMany (slots: Array<Slot<T>>, opts: ConnectionOptions<T>): this {
+      slots.forEach(slot => this.connect(slot, opts))
+      return this
     }
 
     /**
-     * Fires this event with the given data, returning whether or not this event completed all hooks
+     * Fires this event with the given data, returning whether or not this event completed all
+     * hooks. Only sync connections are executed
      * @param data The data to fire with
+     * @see #fireAsync
      */
     public fire (...data: T): boolean {
-        for (let i = 0; i < this._slots.length; i++) {
-          try {
-            if (this._slots[i].slot(this, ...data)) return false
-            this.decay(i)
-          } catch (err) { throw new SignalSlotException(i).causedBy(err) }
-        }
-        return true
+      for (let i = 0; i < this._slots.length; i++) {
+        try {
+          const slot = this._slots[i]
+          if (slot.async) continue
+          this.decay(i)
+          const res = slot.slot(this, ...data)
+          if (res instanceof Promise) throw new SignalSlotException(i).causedBy('Async hook called syncronously')
+          if (res) return false
+        } catch (err) { throw new SignalSlotException(i).causedBy(err) }
+      }
+      return true
+    }
+
+    /**
+     * Fires this event with the given data, returning whether or not this event completed all
+     * hooks. All connections, including those async, are executed
+     * @param data The data to fire with
+     * @see #fire
+     */
+    public async fireAsync (...data: T): Promise<boolean> {
+      for (let i = 0; i < this._slots.length; i++) {
+        try {
+          if (await this._slots[i].slot(this, ...data)) return false
+          this.decay(i)
+        } catch (err) { throw new SignalSlotException(i).causedBy(err) }
+      }
+      return true
     }
 
     /**
@@ -91,12 +119,12 @@ implements ISealable, Iterable<ISlot<T>> {
      * @param uid
      */
     public disconnect (slot: Slot<T>): boolean {
-        const [ slotData, index ] = this.getAt(slot)
-        if (!slotData) return false
+      const [ slotData, index ] = this.getAt(slot)
+      if (!slotData) return false
 
-        slotData.decay = 0
-        this.decay(index)
-        return true
+      slotData.decay = 0
+      this.decay(index)
+      return true
     }
 
     public [Symbol.iterator] (): IterableIterator<ISlot<T>> {

@@ -149,6 +149,22 @@ declare namespace Functional {
   export type Operator<T extends any[] = [], V = void> = (...args: T) => V
 }
 
+declare namespace FunctionalAsync {
+  // generic async functinals
+
+  /** An async functional type that creates values from no input */
+  export type Producer<V> = Operator<[], V>
+
+  /** An async functional type that consumes data and returns a void value */
+  export type Consumer<T extends any[]> = Operator<T>
+
+  /** An async functional type that returns a boolean from input */
+  export type Predicate<T extends any[]> = Operator<T, boolean>
+
+  /** An async functional that *can* a given input and *can* process it to an output */
+  export type Operator<T extends any[] = [], V = void> = Functional.Operator<T, Promise<V>>
+}
+
 declare namespace JSON {
   /** Valid value types for JSON */
   export type Value = string | number | boolean | null | ValueArray | ValueDictionary
