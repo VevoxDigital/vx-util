@@ -1,7 +1,7 @@
 # Beta Releases
 ### 0.15.0
 `+` New Async methods for `Signal`  
-`+` New `Exception` class  
+`+` New `Exception` class, plus some default exceptions  
 `*` Bunch of updates for the `I18nManager` and `LanguageDictionary`  
 `*` Refactor `CancellableSignal` to `PrefixedSignal`, make some behavioral changes to it  
 `*` Update CHANGELOG format  
