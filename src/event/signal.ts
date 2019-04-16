@@ -1,5 +1,5 @@
 
-import { SealedAccessException } from 'exception/ex-sealed-access'
+import { SealedAccessException } from '../exception/ex-sealed-access'
 import { ISealable } from '../util/interfaces'
 import { SignalSlotException } from './signal-exception'
 

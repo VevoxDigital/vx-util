@@ -1,4 +1,7 @@
 # Beta Releases
+### 0.16.1
+`*` Fix bad import in Signals  
+
 ## 0.16.0
 `*` Big overhaul on project configuration files  
 `*` Refactor and re-arrange a bunch of helper types  
