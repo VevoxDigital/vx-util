@@ -7,6 +7,7 @@ import { format } from 'util'
  */
 export class Exception<T extends any[] = []> extends Error {
   public static readonly STACK_INDENT = '    '
+  public static readonly CAUSE_PREFIX = `\n${Exception.STACK_INDENT}Caused By: `
 
   public readonly causes: any[] = []
 
@@ -21,9 +22,8 @@ export class Exception<T extends any[] = []> extends Error {
    */
   public causedBy (err: any): this {
     if (err instanceof Error) {
-      this.stack += `\n${Exception.STACK_INDENT}Caused By: `
-        + (err.stack || err.message).replace(/\n/g, '\n' + Exception.STACK_INDENT)
-    } else this.stack += `\n${Exception.STACK_INDENT}Caused By: ${err}`
+      this.stack += Exception.CAUSE_PREFIX + (err.stack || err.message).replace(/\n/g, '\n' + Exception.STACK_INDENT)
+    } else this.stack += Exception.CAUSE_PREFIX + String(err)
     this.causes.push(err)
     return this
   }

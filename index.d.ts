@@ -1,188 +1,104 @@
 
-/** A mapping of string keys to possible values of type `T` */
-declare interface IDictionary<T = any> {
-  [key: string]: Optional<T>
-}
-
-/** A mapping of string keys to a type `T` */
-declare type Dictionary<T = any> = { [key: string]: T }
-
-/** A mapping of numeric keys to a specific value type */
-declare interface IArrayMap<T = any> {
-  [key: number]: Optional<T>
-}
-
-/** A mapping of both string and numeric keys to a given value type */
-declare type IPlainObject<S = any, N = S> = IDictionary<S> & IArrayMap<N>
-
-/**
- * A function acting as a listener for a variable number of arguments
- * @deprecated
- */
-declare type CallbackFunction<R = void> = Functional.Operator<any[], R>
-
 /** A type that can either be something or undefined */
 declare type Optional<T> = T | undefined
-
-/** Removes `undefined` from a given type */
-declare type Certain<T> = Exclude<T, undefined>
 
 /** A type that can either be something or null */
 declare type Nullable<T> = T | null
 
 /** A type that can either be something, null, or undefined */
-declare type Nilable<T> = T | null | undefined
+declare type Maybe<T> = T | null | undefined
+
+/** Removes `undefined` and `null` from a given type */
+declare type Known<T> = Exclude<T, undefined | null>
 
 /** A type that could be a promise or its base value */
 declare type Awaitable<T> = T | Promise<T>
 
-/** A type that is optionally a partial of another type */
-declare type Overrides<T> = Optional<Partial<T>>
+/** A generic mapping of string keys to a given value type */
+declare type Dictionary<T = any> = { [key: string]: Optional<T> }
 
-/** All fields in `U` removed from `T` */
-declare type ExcludeFields<T, U extends keyof T> = { [K in Exclude<keyof T, U>]: T[K] }
-
-/** Only fields in `U` from `T` */
-declare type ExtractFields<T, U extends keyof T> = { [K in Extract<keyof T, U>]: T[K] }
-
-/** `T`, but with all fields `U` marked required (and others untouched) */
-declare type RequiredFields<T, U extends keyof T> = T & ExtractFields<Required<T>, U>
-
-/** An object who extends `T`, where keys `U` are required and others are optional */
-declare type Options<T, U extends keyof T = never> = RequiredFields<Partial<T>, U>
+/** A generic mapping of string keys to a certain given value type */
+declare type KnownDictionary<T = any> = { [key: string]: T }
 
 /** An object that can be instanced (i.e. new'ed) into a given type, accepting the given arguments to do so */
-declare interface Instanciable<T, A extends any[] = []> extends Function {
-  new(...args: A): T // tslint:disable-line callable-types
-}
+declare interface Instanciable<T, A extends any[] = []> extends Function { new(...args: A): T } // tslint:disable-line callable-types
 
 /** A type with private/protected members stripped */
-declare type AsInterface<T> = {
-    [P in keyof T]: T[P]
-}
+declare type InterfaceOf<T> = { [P in keyof T]: T[P] }
 
-/**
- * A specialized type-safe event emitter
- * @param E A map of event data to any value
- * @param K The key element type
- */
-declare interface IEventEmitter<E extends IDictionary, K = keyof E> {
-  /**
-   * Attaches a listener to the given event
-   * @param event The event o attach to
-   * @param listener The listener function to use
-   * @returns A symbol used to unregister the listener
-   */
-  on (event: K | symbol, listener: CallbackFunction): symbol
+/** All fields in `U` removed from `T` */
+declare type ExcludeFrom<T, U extends keyof T> = { [K in Exclude<keyof T, U>]: T[K] }
 
-  /**
-   * Attaches a listener to every event
-   * @param listener The listener to use
-   * @returns A symbol used to unregister the listener
-   */
-  onAny (listener: (event: K | symbol, ...args: any[]) => void): symbol
+/** Only fields in `U` from `T` */
+declare type ExtractFrom<T, U extends keyof T> = { [K in Extract<keyof T, U>]: T[K] }
 
-  /**
-   * Attaches a listener to the given event, then removes it after it has been fired once
-   * @param event The event o attach to
-   * @param listener The listener function to use
-   * @returns A symbol used to unregister the listener
-   */
-  once (event: K | symbol, listener: CallbackFunction): symbol
+/** `T`, but with all fields `U` marked required (and others untouched) */
+declare type RequiredIn<T, U extends keyof T> = T & ExtractFrom<Required<T>, U>
 
-  /**
-   * Unhooks an event listener from this emitter
-   * @param symbol The listener symbol to unhook
-   * @returns This emitter
-   */
-  off (listener: symbol): this
+/** An object who extends `T`, where keys `U` are required and others are optional */
+declare type Options<T, U extends keyof T = never> = RequiredIn<Partial<T>, U>
 
-  /**
-   * Unhooks all listeners from this emitter
-   * @returns This emitter
-   */
-  offAll (): this
+/** A pair of a given type */
+declare type Pair<T> = [ T, T ]
 
-  /**
-   * Emits data on a given event
-   * @param event The event to emit on
-   * @param args The args to emit
-   * @returns This emitter
-   */
-  emit (event: K, ...args: any[]): this
-
-  /**
-   * Sets a maximum number of listeners per event, optionally only for a specific event
-   * @param max The maximum number of listeners (0 for unlimited)
-   * @param event Optionally, override for a specific event
-   */
-  setMax (max: number, event?: K | symbol): void
-
-  /**
-   * Gets the maximum number of listeners for this emitter, or, if specified, for a given event
-   * @param event The event to check
-   * @returns The max, or 0 if no maximum is set
-   */
-  getMax (event?: K | symbol): number
-
-  /**
-   * Gets a list of registered events
-   * @returns The list of events
-   */
-  events (): ReadonlyArray<K | symbol>
-}
+/** A triple of a given type */
+declare type Triple<T> = [ T, T, T ]
 
 /** Functional types */
 declare namespace Functional {
   // generic functionals
 
   /** A functional type that creates values from no input */
-  export type Producer<V> = Operator<[], V>
+  type Producer<V> = Operator<[], V>
 
   /** A functional type that consumes data and returns a void value */
-  export type Consumer<T extends any[]> = Operator<T>
+  type Consumer<T extends any[]> = Operator<T>
 
   /** A functional type that returns a boolean from input */
-  export type Predicate<T extends any[]> = Operator<T, boolean>
+  type Predicate<T extends any[]> = Operator<T, boolean>
 
   /** A functional that *can* a given input and *can* process it to an output */
-  export type Operator<T extends any[] = [], V = void> = (...args: T) => V
+  type Operator<T extends any[] = [], V = void> = (...args: T) => V
 }
 
 declare namespace FunctionalAsync {
   // generic async functinals
 
   /** An async functional type that creates values from no input */
-  export type Producer<V> = Operator<[], V>
+  type Producer<V> = Operator<[], V>
 
   /** An async functional type that consumes data and returns a void value */
-  export type Consumer<T extends any[]> = Operator<T>
+  type Consumer<T extends any[]> = Operator<T>
 
   /** An async functional type that returns a boolean from input */
-  export type Predicate<T extends any[]> = Operator<T, boolean>
+  type Predicate<T extends any[]> = Operator<T, boolean>
 
   /** An async functional that *can* a given input and *can* process it to an output */
-  export type Operator<T extends any[] = [], V = void> = Functional.Operator<T, Promise<V>>
+  type Operator<T extends any[] = [], V = void> = Functional.Operator<T, Promise<V>>
 }
+
+
 
 declare namespace JSON {
   /** Valid value types for JSON */
-  export type Value = string | number | boolean | null | ValueArray | ValueDictionary
+  type Value = string | number | boolean | null | ValueArray | ValueDictionary
 
   /** An array of JSON values */
-  export interface ValueArray extends Array<Value> { }
+  interface ValueArray extends Array<Value> { }
 
   /** A dictionary of JSON values */
-  export interface ValueDictionary extends IDictionary<Value> { }
+  interface ValueDictionary extends Dictionary<Value> { }
 }
 
 declare interface JSON {
   parse (text: string): JSON.Value
 }
 
-/** The `package.json` file for yarn/npm */
-declare namespace PackageJSON {
-  export interface IPackage extends JSON.ValueDictionary {
+
+
+/** Interfaces related to `npm`/`yarn`. */
+declare namespace NPM {
+  interface IPackageJSON extends JSON.ValueDictionary {
 
     /** The package's internal name */
     readonly name: string
@@ -203,16 +119,16 @@ declare namespace PackageJSON {
     readonly homepage?: string
 
     /** A tracker to report bugs too */
-    readonly bugs?: string | PackageJSON.IPackageBugs
+    readonly bugs?: string | NPM.IPackageBugs
 
     /** The license that this package is available under */
     readonly license?: string
 
     /** The author of the package */
-    readonly author?: string | PackageJSON.IPackageAuthor
+    readonly author?: string | NPM.IPackageAuthor
 
     /** Any additional contributors to the package */
-    readonly contributors?: string[] | PackageJSON.IPackageAuthor[]
+    readonly contributors?: string[] | NPM.IPackageAuthor[]
 
     /** An array of files to include in publishing */
     readonly files?: string[]
@@ -221,40 +137,40 @@ declare namespace PackageJSON {
     readonly main?: string
 
     /** Any binary commands available to the package */
-    readonly bin?: string | IDictionary<string>
+    readonly bin?: string | Dictionary<string>
 
     /** Documentation for this pacakage */
     readonly man?: string | string[]
 
     /** The location of certain package directories */
-    readonly directories?: PackageJSON.IPackageDirectories
+    readonly directories?: NPM.IPackageDirectories
 
     /** The version control repository for this package */
     readonly repository?: string | IPackageRepository
 
     /** The scripts for the package */
-    readonly scripts?: IDictionary<string>
+    readonly scripts?: Dictionary<string>
 
     /** The package's configuration data */
-    readonly config?: PackageJSON.IPackageConfig
+    readonly config?: NPM.IPackageConfig
 
     /** A mapping of the package dependencies to their versions */
-    readonly dependencies?: IDictionary<string>
+    readonly dependencies?: Dictionary<string>
 
     /** A mapping of the package development-only dependencies to their versions */
-    readonly devDependencies?: IDictionary<string>
+    readonly devDependencies?: Dictionary<string>
 
     /** A mapping of the package peer dependencies to their versions */
-    readonly peerDependencies?: IDictionary<string>
+    readonly peerDependencies?: Dictionary<string>
 
     /** A mapping of the package optional dependencies to their versions */
-    readonly optionalDependencies?: IDictionary<string>
+    readonly optionalDependencies?: Dictionary<string>
 
     /** An array of dependencies that come bundled */
     readonly bundledDependencies?: string[]
 
     /** The engines this package runs on */
-    readonly engines?: PackageJSON.IPackageEngines
+    readonly engines?: NPM.IPackageEngines
 
     /** The list of OSes this package runs on */
     readonly os?: string[]
@@ -269,7 +185,7 @@ declare namespace PackageJSON {
     readonly private?: boolean
 
     /** Speciallized configuration for publishing */
-    readonly publishConfig?: PackageJSON.IPackagePublishConfig
+    readonly publishConfig?: NPM.IPackagePublishConfig
 
     /** Any yarn workspaces for this package */
     readonly workspaces?: string[]
@@ -315,7 +231,7 @@ declare namespace PackageJSON {
     name?: string
 
     /** The configuration data */
-    config?: IDictionary
+    config?: JSON.ValueDictionary
   }
 
   /** The publishing configuration this package */
@@ -331,6 +247,11 @@ declare namespace PackageJSON {
     /** The URL of the repository */
     url: string
   }
+}
+
+declare module '*/package.json' {
+  const packageJson: NPM.IPackageJSON
+  export = packageJson
 }
 
 declare interface Math {
@@ -368,7 +289,3 @@ declare interface Math {
   deg (radians: number): number
 }
 
-declare module '*/package.json' {
-  const packageJson: PackageJSON.IPackage
-  export = packageJson
-}

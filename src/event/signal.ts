@@ -1,160 +1,221 @@
-import { ISealable } from '../util/sealable'
+
+import { SealedAccessException } from 'exception/ex-sealed-access'
+import { ISealable } from '../util/interfaces'
 import { SignalSlotException } from './signal-exception'
 
-export type SlotDecay = number | Functional.Producer<boolean>
-export type Slot<T extends any[]> = (data: Signal<T>, ...args: T) => Awaitable<boolean | void>
+export type SlotDecay = number | Functional.Predicate<[]>
 
-export interface ISlot<T extends any[]> {
-  /** The slot function */
-  slot: Slot<T>
+export type Slot<T extends any[]> = FunctionalAsync.Operator<T, any>
+export type SlotSync<T extends any[]> = Functional.Operator<T, any>
 
-  /** A value deciding when a hook should decay */
+export interface IConnectedSlot<T extends any[]> {
+  slot: Functional.Operator<T, Awaitable<boolean>>
   decay?: SlotDecay
-
-  /** Whether or not to treat this slot as async */
-  async: boolean
+  sync: boolean
 }
 
-export type ConnectionOptions<T extends any[]> = Partial<ExcludeFields<ISlot<T>, 'slot'> & { thisArg: any }>
+/**
+ * An implementation of the Signals & Slots concept available in other languages, taking on
+ * an async approach while still having very event-like feel.
+ */
+export class Signal<T extends any[] = any[]>
+implements ISealable, Iterable<Promise<T>> {
 
-export class Signal<T extends any[] = []>
-implements ISealable, Iterable<ISlot<T>> {
+  // TODO implement listener limit and "rawListeners" concept
 
-    private readonly _slots: Array<ISlot<T>> = []
+  /** A pre-fire signal for this signal. If this signal fails to fire, this one will not fire */
+  public pre?: Signal<T>
 
-    private _sealed = false
+  /** A post-fire signal for this signal. Fired automatically if this one successfully fires */
+  public post?: Signal<T>
 
-    /** A callback function that fires this signal */
-    public get callback (): Functional.Consumer<T> {
-        return (...args: T) => this.fire(...args)
+  private readonly _slots: Array<IConnectedSlot<T>> = []
+  private _sealed = false
+
+  public constructor (opts: Partial<{ pre: Signal<T>, post: Signal<T> }> = {}) {
+    this.pre = opts.pre
+    this.post = opts.post
+  }
+
+  public *[Symbol.iterator] () {
+    while (true) yield this.promise()
+  }
+
+  /**
+   * Hooks an asnyc function handler to this event. A decay can be provided as a number of times
+   * until the handler should unhook or a function returning truthy when the handler has "decayed".
+   * @param slot The handler to hook
+   * @param decay Decay timer
+   * @param thisArg Binding of `this` in the slot
+   * @see #connectSync
+   */
+  public connect (slot: Slot<T>, decay?: SlotDecay, thisArg: any = this): this {
+    SealedAccessException.check(this)
+    this._slots.push({ slot: slot.bind(thisArg), decay, sync: false })
+    return this
+  }
+
+  /**
+   * Hooks a sync function handler to this event. A decay can be provided as a number of times
+   * until the handler should unhook or a function returning truthy when the handler has "decayed".
+   * @param slot The handler to hook
+   * @param decay Decay timer
+   * @param thisArg Binding of `this` in the slot
+   * @see #connect
+   */
+  public connectSync (slot: SlotSync<T>, decay?: SlotDecay, thisArg: any = this): this {
+    SealedAccessException.check(this)
+    this._slots.push({ slot: slot.bind(thisArg), decay, sync: true })
+    return this
+  }
+
+  /**
+   * A helper function to connect a slot with a decay of `1`.
+   * @param handler The handler to hook
+   * @param thisArg Binding of `this` in the slot
+   * @see {@link #connect}
+   */
+  public connectOnce (slot: Slot<T>, thisArg?: any): this {
+    return this.connect(slot, 1, thisArg)
+  }
+
+  /**
+   * A helper function to connect a sync slot with a decay of `1`.
+   * @param handler The handler to hook
+   * @param thisArg Binding of `this` in the slot
+   * @see {@link #connectSync}
+   */
+  public connectOnceSync (slot: SlotSync<T>, thisArg?: any): this {
+    return this.connectSync(slot, 1, thisArg)
+  }
+
+  /**
+   * Returns a promise that will resolve next time this event fires
+   */
+  public promise (): Promise<T> {
+    return new Promise<T>(resolve => this.connectSync((...args: T) => resolve(args)))
+  }
+
+  /**
+   * Fires this event with the given data, returning whether or not this event completed all
+   * hooks. All connections, including those that are sync, are executed
+   * @param data The data to fire with
+   * @see #fireSync
+   */
+  public async fire (...data: T): Promise<any> {
+    if (this.pre) {
+      const p = await this.pre.fire(...data)
+      if (p) return p
     }
 
-    /**
-     * Hooks a function handler to this event. A decay can be provided as a number of times until
-     * the handler or a function returning a boolean value (true will be unhooked)
-     * Note that, if a slot returns a promise and is not marked as async, it will cause the signal
-     * to fail to fire successfully.
-     * @param slot The handler to hook
-     * @param opts Options for the connection
-     */
-    public connect (slot: Slot<T>, opts: ConnectionOptions<T> = {}): this {
-        if (this._sealed) throw new Error('Cannot attach additional slots to a sealed signal')
-
-        slot = slot.bind(opts.thisArg || this)
-        this._slots.push({ slot, decay: opts.decay, async: !!opts.async })
-        return this
-    }
-
-    /**
-     * Returns an async iterator that yields every time this signal is fired
-     */
-    public async *connectAsync (): AsyncIterableIterator<T> {
-      while (true) yield this.connectOnceAsync()
-    }
-
-    /**
-     * Returns a promise that is resolved the next time this signal is fired
-     */
-    public connectOnceAsync (): Promise<T> {
-      return new Promise<T>(resolve => this.connectOnce((_signal, ...args: T) => resolve(args)))
-    }
-
-    /**
-     * A helper function to connect a slot with a decay of `1`.
-     * @param handler The handler to hook
-     * @see {@link #connect}
-     */
-    public connectOnce (slot: Slot<T>, thisArg?: any): this {
-      return this.connect(slot, { decay: 1, thisArg })
-    }
-
-    /**
-     * A helper function to connect many slots to this signal
-     * @param slots The slots
-     * @see {@link #connect}
-     */
-    public connectMany (slots: Array<Slot<T>>, opts: ConnectionOptions<T>): this {
-      slots.forEach(slot => this.connect(slot, opts))
-      return this
-    }
-
-    /**
-     * Fires this event with the given data, returning whether or not this event completed all
-     * hooks. Only sync connections are executed
-     * @param data The data to fire with
-     * @see #fireAsync
-     */
-    public fire (...data: T): boolean {
-      for (let i = 0; i < this._slots.length; i++) {
-        try {
-          const slot = this._slots[i]
-          if (slot.async) continue
-          this.decay(i)
-          const res = slot.slot(this, ...data)
-          if (res instanceof Promise) throw new SignalSlotException(i).causedBy('Async hook called syncronously')
-          if (res) return false
-        } catch (err) { throw new SignalSlotException(i).causedBy(err) }
+    for (const [ slot, index ] of this._decay()) {
+      try {
+        const res = await slot.slot(...data)
+        if (res) return res
+      } catch (err) {
+        throw new SignalSlotException(index).causedBy(err)
       }
-      return true
     }
 
-    /**
-     * Fires this event with the given data, returning whether or not this event completed all
-     * hooks. All connections, including those async, are executed
-     * @param data The data to fire with
-     * @see #fire
-     */
-    public async fireAsync (...data: T): Promise<boolean> {
-      for (let i = 0; i < this._slots.length; i++) {
-        try {
-          if (await this._slots[i].slot(this, ...data)) return false
-          this.decay(i)
-        } catch (err) { throw new SignalSlotException(i).causedBy(err) }
+    if (this.post) {
+      const p = await this.post.fire(...data)
+      if (p) return p
+    }
+  }
+
+  /**
+   * Fires this event with the given data, returning whether or not this event completed all
+   * hooks. Only sync connections are executed
+   * @param data The data to fire with
+   * @see #fire
+   */
+  public fireSync (...data: T): any {
+    if (this.pre) {
+      const p = this.pre.fireSync(...data)
+      if (p) return p
+    }
+
+    for (const [ slot, index ] of this._decay(true)) {
+      try {
+        const res = slot.slot(...data)
+        if (res) return res
+      } catch (err) {
+        throw new SignalSlotException(index).causedBy(err)
       }
-      return true
     }
 
-    /**
-     * Disconnects a signal by UUID
-     * @param uid
-     */
-    public disconnect (slot: Slot<T>): boolean {
-      const [ slotData, index ] = this.getAt(slot)
-      if (!slotData) return false
-
-      slotData.decay = 0
-      this.decay(index)
-      return true
+    if (this.post) {
+      const p = this.post.fireSync(...data)
+      if (p) return p
     }
+  }
 
-    public [Symbol.iterator] (): IterableIterator<ISlot<T>> {
-        return this._slots[Symbol.iterator]()
+  /**
+   * Disconnects all instances of a slot from this signal
+   * @param slot The slot to disconnect
+   */
+  public disconnect (slot: Slot<T> | SlotSync<T>): void {
+    SealedAccessException.check(this)
+    for (let i = 0; i < this._slots.length; i++) {
+      if (this._slots[i].slot === slot) this._slots.slice(i, 1)
     }
+  }
 
-    public get sealed (): boolean {
-        return this._sealed
-    }
+  /**
+   * Disconnects all slots from this signal
+   */
+  public disconnectAll (): void {
+    SealedAccessException.check(this)
+    for (const slot of this._slots) this.disconnect(slot.slot)
+  }
 
-    public seal (): void {
-        this._sealed = true
+  /**
+   * Gets an array of slots registered to this signal
+   * @param syncOnly Whether or not to only return sync slots
+   */
+  public slots (syncOnly: true): Array<SlotSync<T>>
+  public slots (syncOnly?: false): Array<Slot<T> | SlotSync<T>>
+  public slots (syncOnly?: boolean): Array<Slot<T> | SlotSync<T>> {
+    const s = []
+    for (const slot of this._slots) {
+      if (syncOnly && !slot.sync) continue
+      s.push(slot.slot)
     }
+    return s
+  }
 
-    private getAt (slot: Slot<T>): [ Optional<ISlot<T>>, number ] {
-        for (let i = 0; i < this._slots.length; i++) {
-            const slotData = this._slots[i]
-            if (slotData.slot === slot) return [ slotData, i ]
-        }
-        return [ undefined, -1 ]
-    }
+  public get sealed () {
+    return this._sealed
+  }
 
-    private decay (index: number): void {
-        if (this.updateDecay(index)) this._slots.slice(index, 1)
-    }
+  public seal () {
+    this._sealed = true
+  }
 
-    private updateDecay (index: number): boolean {
-        const hook = this._slots[index]
-        if (hook.decay === undefined) return false
-        else if (typeof hook.decay === 'number') return --hook.decay <= 0
-        else return hook.decay()
+  /**
+   * Seals the entire signal chain, calling this method on any pre- and post-fire signals attached
+   * to this one
+   */
+  public sealAll () {
+    this.seal()
+    if (this.pre) this.pre.sealAll()
+    if (this.post) this.post.sealAll()
+  }
+
+  private *_decay (syncOnly: boolean = false): IterableIterator<[IConnectedSlot<T>, number]> {
+    for (let i = 0; i < this._slots.length; i++) {
+      const slot = this._slots[i]
+      if (syncOnly && !slot.sync) continue
+
+      yield [ slot, i ]
+      if (this._updateDecay(i)) this._slots.slice(i, 1)
     }
+  }
+
+  private _updateDecay (index: number): boolean {
+    const hook = this._slots[index]
+    if (!hook.decay) return false
+    else if (typeof hook.decay === 'number') return --hook.decay <= 0
+    else return hook.decay()
+  }
 }

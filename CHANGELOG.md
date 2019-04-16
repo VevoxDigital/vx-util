@@ -1,5 +1,17 @@
 # Beta Releases
-### 0.15.0
+## 0.16.0
+`*` Big overhaul on project configuration files  
+`*` Refactor and re-arrange a bunch of helper types  
+`*` Refactor `Random` to `SeededRandom`, multiple functional changes  
+`*` Overhaul `ComparableMap`, though functionally identical  
+`*` Collapse utility interfaces (`ICloneable`, `IComparable`, `ISealable`, and `ISerializable`) into one file  
+`*` Overhaul exceptions and add a bunch of new ones  
+`-` Remove some unused extranious classes  
+`-` Completely remove logging classes  
+`-` Completely remove process classes  
+`-` Completely remove math classes  
+
+## 0.15.0
 `+` New Async methods for `Signal`  
 `+` New `Exception` class, plus some default exceptions  
 `*` Bunch of updates for the `I18nManager` and `LanguageDictionary`  
@@ -15,23 +27,23 @@
 `*` Adjust typings on `JSON` global interface and `PackageJSON.IPackage`  
 `-` Remove `Functional.Function` in favor of `Functional.Operator`  
 
-### 0.14.0
+## 0.14.0
 `*` Fall back to Node v10 and `es6`  
 `*` `Random` now uses `number` again instead of `BigInt`  
 
-### 0.13.0
+## 0.13.0
 `+` New `GlobalLogger`  
 `+` Return of the `.editorconfig`  
 `*` Overhaul `Logger` class  
 
-### 0.12.0
+## 0.12.0
 `+` New `CancellableSignal` variant  
 `+` New `Certain` type  
 `*` Added signals to `ComparableMap`, `Random`, and `Logger`  
 `*` Changes to `Ordered` to allow indexing (not type-safe yet)  
 `*` Default a few functional types to empty arrays instead of `any[]`.
 
-### 0.11.0
+## 0.11.0
 `+` New `Fields` and `Options` types  
 `*` Refactor `Event` to `Signal` (and associated methods) for clarity reasons  
 `*` Move `util` imports around  
@@ -41,7 +53,7 @@
 `*` Bump dependency versions for `lodash` vulnerability  
 `-` Remove unused `cash-mv` dependency for `lodash` vulnerability  
 
-### 0.10.0
+## 0.10.0
 `+` New `Nullable` type  
 `+` New `Nilable` type  
 `+` New `IPlainObject` type  
@@ -55,7 +67,7 @@
 #### 0.9.1
 `*` Correct bad import in `event\event`  
 
-### 0.9.0
+## 0.9.0
 `+` New `Instanciable` generic type  
 `+` New `OptionalPromise` generic type  
 `+` New `Event` and `EventHandler` classes  
@@ -83,7 +95,7 @@
 #### 0.8.1
 `*` Main package field now has the correct extension  
 
-### 0.8.0
+## 0.8.0
 `+` New generic `Ordered` class  
 `+` New `ComparableMap` class re-implementing the ECMAScript map methods  
 `+` New `ISealable` interface  
@@ -95,7 +107,7 @@
 `*` Output `.mjs` over `.js` for Node's sake  
 `-` Remove old `io` and `TupleKey` classes  
 
-### 0.7.0
+## 0.7.0
 `+` Actually started keeping a changelog  
 `+` New `Optional` type  
 `+` New `Functional` types  

@@ -2,6 +2,6 @@
 /**
  * A no-op function
  */
-export function noop (): void {
+export function NOOP (): void {
   /* no-op */
 }

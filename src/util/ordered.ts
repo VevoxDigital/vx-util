@@ -1,4 +1,4 @@
-import { ICloneable } from '../cloneable'
+import { ICloneable } from './interfaces'
 
 /**
  * A generic ordered value of a specific tuple type

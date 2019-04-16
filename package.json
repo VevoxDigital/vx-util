@@ -1,6 +1,6 @@
 {
   "name": "vx-util",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Core utility library for Vevox projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,8 +11,7 @@
     "Matthew Struble <matt@vevox.io>"
   ],
   "scripts": {
-    "make": "./node_modules/.bin/rimraf lib/ .tmp/ && tsc && babel .tmp/lib --out-dir lib",
-    "validate": "tsc --noEmit"
+    "prepare": "rimraf lib && tsc"
   },
   "publishConfig": {
     "access": "public"

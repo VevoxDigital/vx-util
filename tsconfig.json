@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
     "baseUrl": "src/",
-    "outDir": ".tmp/lib/",
-    "allowJs": false,
+    "outDir": "lib/",
+
     "target": "es6",
-    "strict": true,
+    "lib": [ "es6" ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+
     "declaration": true,
     "declarationDir": "lib/",
-    "inlineSourceMap": true,
+    "sourceMap": true,
+
+    "allowJs": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "removeComments": false,
-    "downlevelIteration": true,
-    "lib": [ "es6" ],
-    "moduleResolution": "node"
+    "strict": true
   },
   "exclude": [
-    "node_modules/**",
-    "lib/**"
+    "node_modules",
+    "lib"
   ]
 }

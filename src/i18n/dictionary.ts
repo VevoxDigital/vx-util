@@ -25,7 +25,7 @@ export class LanguageDictionary extends Map<string, string> {
     return dict
   }
 
-  public constructor (data: IDictionary<string> = {}) {
+  public constructor (data: Dictionary<string> = {}) {
     const initial: Array<[ string, string ]> = []
     for (const k of Object.keys(data)) initial.push([k, (data as Dictionary)[k]])
     super(initial)

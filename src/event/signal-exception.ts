@@ -1,5 +1,5 @@
 
-import { Exception } from '../exception'
+import { Exception } from '../exception/exception'
 
 /**
  * An {@link Exception} that is thrown when a signal slot raises an exception
