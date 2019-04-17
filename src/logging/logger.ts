@@ -7,12 +7,23 @@ import * as winston from 'winston'
 import * as Transport from 'winston-transport'
 import { name } from '../../package.json'
 
-class DebuggerTransport extends Transport {
+export interface IDebuggerTransportOptions extends Transport.TransportStreamOptions {
+  namespace: string
+}
+
+export class DebuggerTransport extends Transport {
+
+  public readonly namespace?: string
+
+  public constructor (opts: Partial<IDebuggerTransportOptions> = {}) {
+    super(opts)
+    this.namespace = opts.namespace
+  }
 
   public log (info: TransformableInfo, callback: () => void) {
     if (info[Symbol.for('level') as any] === 'debug') {
       debug(
-        [ name.substring(1).replace('/', ':') ].concat(info.prefix as string[] || []).join(':')
+        ([ this.namespace || name ]).concat(info.prefix as string[] || []).join(':')
       )(info.message)
     }
     callback()
@@ -32,8 +43,7 @@ const logger = winston.createLogger({
   ),
   level: 'debug',
   transports: [
-    new winston.transports.Console({ level: 'verbose' }),
-    new DebuggerTransport()
+    new winston.transports.Console({ level: 'verbose' })
   ]
 })
 
