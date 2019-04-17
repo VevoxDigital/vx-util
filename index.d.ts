@@ -26,6 +26,9 @@ declare interface Instanciable<T, A extends any[] = []> extends Function { new(.
 /** A type with private/protected members stripped */
 declare type InterfaceOf<T> = { [P in keyof T]: T[P] }
 
+/** A multuble type morph */
+declare type Mutable<T extends Dictionary, K extends string> = { [P in K]: T[P] }
+
 /** All fields in `U` removed from `T` */
 declare type ExcludeFrom<T, U extends keyof T> = { [K in Exclude<keyof T, U>]: T[K] }
 
@@ -287,5 +290,11 @@ declare interface Math {
    * @param radians The number of radians to convert
    */
   deg (radians: number): number
+}
+declare module 'winston/lib/winston/logger' {
+  import { Logger } from 'winston'
+
+  const logger: Logger
+  export = logger
 }
 

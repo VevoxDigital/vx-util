@@ -19,6 +19,8 @@ export * from './exception/exception'
 export * from './i18n/dictionary'
 export * from './i18n/index'
 
+export * from './logging/logger'
+
 export * from './util/index'
 export * from './util/interfaces'
 export * from './util/map'

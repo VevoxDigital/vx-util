@@ -1,4 +1,7 @@
 # Beta Releases
+### 0.16.2
+`+` New functions attached to the winston logger  
+
 ### 0.16.1
 `*` Fix bad import in Signals  
 
