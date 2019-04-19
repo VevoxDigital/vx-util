@@ -1,4 +1,7 @@
 # Beta Releases
+### 0.16.3
+`*` Changes to the TSConfig  
+
 ### 0.16.2
 `+` New functions attached to the winston logger  
 

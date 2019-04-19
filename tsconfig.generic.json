@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [ "es6" ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    "allowJs": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "removeComments": false,
+    "strict": true
+  }
+}
