@@ -1,6 +1,9 @@
 # Beta Releases
+### 0.16.4
+`*` Bump version because NPM did something weird  
+
 ### 0.16.3
-`*` Update TypeScript to `3.4`, enable `esModuleInterop`
+`*` Update TypeScript to `3.4`, enable `esModuleInterop`  
 
 ### 0.16.2
 `+` New functions attached to the winston logger  
