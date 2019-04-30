@@ -1,6 +1,6 @@
 # Beta Releases
 ### 0.16.3
-`*` Changes to the TSConfig  
+`*` Update TypeScript to `3.4`, enable `esModuleInterop`
 
 ### 0.16.2
 `+` New functions attached to the winston logger  
