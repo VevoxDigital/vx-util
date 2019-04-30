@@ -1,10 +1,10 @@
 
 /// <reference path="../augments.d.ts"/>
 
-import * as debug from 'debug'
+import debug from 'debug'
 import { format, TransformableInfo } from 'logform'
-import * as winston from 'winston'
-import * as Transport from 'winston-transport'
+import winston from 'winston'
+import Transport from 'winston-transport'
 import { name } from '../../package.json'
 
 export interface IDebuggerTransportOptions extends Transport.TransportStreamOptions {
