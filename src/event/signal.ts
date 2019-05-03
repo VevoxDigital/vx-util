@@ -8,6 +8,10 @@ export type SlotDecay = number | Functional.Predicate<[]>
 export type Slot<T extends any[]> = FunctionalAsync.Operator<T, any>
 export type SlotSync<T extends any[]> = Functional.Operator<T, any>
 
+export type Slotted<N extends string, A extends any[] = []> = {
+  [key in N]: (...args: A) => Awaitable<boolean>
+}
+
 export interface IConnectedSlot<T extends any[]> {
   slot: Functional.Operator<T, Awaitable<boolean>>
   decay?: SlotDecay
@@ -52,6 +56,18 @@ implements ISealable, Iterable<Promise<T>> {
   public connect (slot: Slot<T>, decay?: SlotDecay, thisArg: any = this): this {
     SealedAccessException.check(this)
     this._slots.push({ slot: slot.bind(thisArg), decay, sync: false })
+    return this
+  }
+
+  /**
+   * Attached this signal to a given slotted object
+   * @param slot The name of the slot to attach
+   * @param at The slotted object itself
+   * @param decay Decay for the attachment
+   */
+  public connectTo <N extends string> (slot: N, at: Slotted<N, T>, decay?: SlotDecay): this {
+    SealedAccessException.check(this)
+    this._slots.push({ slot: at[slot].bind(at as any), decay, sync: false })
     return this
   }
 
