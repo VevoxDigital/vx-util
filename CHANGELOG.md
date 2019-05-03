@@ -1,4 +1,9 @@
 # Beta Releases
+## 0.17.0
+`+` New `Slotted` type for objects that contain slots for a `Signal`  
+`+` New `SimpleCommandLineInterface` class  
+`-` Remove a bunch of unused dev dependencies on Babel  
+
 ### 0.16.4
 `*` Bump version because NPM did something weird  
 
