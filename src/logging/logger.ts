@@ -55,8 +55,9 @@ Logger.prototype.fork = function (this: MutableLogger, p0: string, ...pX: string
   const prefix = (this.prefix || []).concat([p0])
   this.children = this.children || { }
 
-  this.children[p0] = this.children[p0] || this.child({ prefix })
-  const child = this.children[p0]!;
+  const pkey = prefix.join(':')
+  this.children[pkey] = this.children[pkey] || this.child({ prefix })
+  const child = this.children[pkey]!;
   (child as MutableLogger).prefix = prefix
 
   return pX.length ? child.fork(pX[0], ...pX.slice(1)) : child

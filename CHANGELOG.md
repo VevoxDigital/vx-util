@@ -1,4 +1,7 @@
 # Beta Releases
+### 0.17.1
+`*` Corrected an issue with `LOG.fork` incorrectly fetching existing loggers
+
 ## 0.17.0
 `+` New `Slotted` type for objects that contain slots for a `Signal`  
 `+` New `SimpleCommandLineInterface` class  

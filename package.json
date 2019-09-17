@@ -1,6 +1,6 @@
 {
   "name": "vx-util",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "Core utility library for Vevox projects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
